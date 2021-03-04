@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -58,34 +59,59 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = txt_email.getText().toString();
-                final String password = txt_password.getText().toString();
-
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address", Toast.LENGTH_SHORT).show();
-                }
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password", Toast.LENGTH_SHORT).show();
-                }
-
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            if (password.length() < 6) {
-                                txt_password.setError("Password too short");
-                            } else {
-                                Toast.makeText(LoginActivity.this, ("Login Failed!"), Toast.LENGTH_LONG).show();
-
-                            }
-                        } else {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                });
+                confirmLogin(v);
             }
         });
+    }
+
+    public void confirmLogin(View view) {
+        boolean validation = validateEmail() && validatePassword();     //Both methods must return true
+
+        if(validation) {
+            String email = txt_email.getText().toString();
+            String password = txt_password.getText().toString();
+
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override   //Calling Firebase login method
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, ("Login Failed!"), Toast.LENGTH_LONG).show();
+                    }else{
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
+        }
+    }
+
+    public boolean validateEmail() {
+        String email = txt_email.getText().toString();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if(email.isEmpty()) {
+            txt_email.setError("Field can't be empty");
+            return false;
+        }else if(!email.matches(emailPattern)) {
+            txt_email.setError("Please enter a valid email");
+            return false;
+        }else {
+            txt_email.setError(null);
+            return true;
+        }
+
+    }
+
+    private boolean validatePassword() {
+        String password = txt_password.getText().toString();
+
+        if(password.isEmpty()) {
+            txt_password.setError("Field can't be empty");
+            return false;
+        }else {
+            txt_password.setError(null);
+            return true;
+        }
     }
 }
