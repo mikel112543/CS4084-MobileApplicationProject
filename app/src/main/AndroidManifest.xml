@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS4084_Project_Farm_Market">
-        <activity android:name=".RegisterActivity">
-        </activity>
+        <activity android:name=".PasswordResetActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

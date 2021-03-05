@@ -62,7 +62,15 @@ public class LoginActivity extends AppCompatActivity {
                 confirmLogin(v);
             }
         });
+
+        txt_passReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, PasswordResetActivity.class));
+            }
+        });
     }
+
 
     public void confirmLogin(View view) {
         boolean validation = validateEmail() && validatePassword();     //Both methods must return true
