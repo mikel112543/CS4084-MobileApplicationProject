@@ -1,10 +1,13 @@
 package com.example.cs4084_project_farm_market;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -17,15 +20,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText txt_email, txt_password;
+    private TextInputLayout txt_email, txt_password;
     private FirebaseAuth auth;
     private Button loginButton;
-    private TextView txt_register, txt_passReset;
+    private Button registerButton;
+    private TextView  txt_passReset;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -43,13 +48,19 @@ public class LoginActivity extends AppCompatActivity {
 
         txt_email = findViewById(R.id.txt_email);
         txt_password = findViewById(R.id.txt_password);
-        txt_register = findViewById(R.id.txt_register);
+        registerButton = findViewById(R.id.btn_register);
         txt_passReset = findViewById(R.id.txt_passReset);
         loginButton = findViewById(R.id.btn_login);
 
+        Drawable outline = getResources().getDrawable(R.drawable.button_outline);
+        Drawable buttonInline = getResources().getDrawable(R.drawable.button);
+
+        registerButton.setBackground(outline);
+        loginButton.setBackground(buttonInline);
+
         auth = FirebaseAuth.getInstance();
 
-        txt_register.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
@@ -76,8 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         boolean validation = validateEmail() && validatePassword();     //Both methods must return true
 
         if(validation) {
-            String email = txt_email.getText().toString();
-            String password = txt_password.getText().toString();
+            String email = txt_email.getEditText().getText().toString();
+            String password = txt_password.getEditText().getText().toString();
 
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override   //Calling Firebase login method
@@ -95,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean validateEmail() {
-        String email = txt_email.getText().toString();
+        String email = txt_email.getEditText().getText().toString();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         if(email.isEmpty()) {
@@ -112,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validatePassword() {
-        String password = txt_password.getText().toString();
+        String password = txt_password.getEditText().getText().toString();
 
         if(password.isEmpty()) {
             txt_password.setError("Field can't be empty");

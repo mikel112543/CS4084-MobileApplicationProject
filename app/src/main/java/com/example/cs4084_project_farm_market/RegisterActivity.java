@@ -2,6 +2,7 @@ package com.example.cs4084_project_farm_market;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,8 +34,7 @@ import java.util.regex.Pattern;
 public class RegisterActivity extends AppCompatActivity {
 
     public static final String TAG = "TAG";
-    private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_reenterPassword;
-    private EditText txt_birthday;
+    private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_reenterPassword, txt_birthday;
     private Button btn_confirm;
     private FirebaseAuth auth;
     private String userID;
@@ -67,16 +67,19 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         txt_firstname = findViewById(R.id.txt_firstname);
-        txt_surname = findViewById(R.id.txt_lastname);
+        txt_surname = findViewById(R.id.txt_firstname);
         txt_email = findViewById(R.id.txt_registerEmail);
         txt_password = findViewById(R.id.txt_registerPassword);
-        txt_reenterPassword = findViewById(R.id.txt_reenterPassword);
+        //txt_reenterPassword = findViewById(R.id.txt_reenterPassword);
         txt_birthday = findViewById(R.id.txt_birthday);
         btn_confirm = findViewById(R.id.btn_registerConfirm);
 
+        Drawable buttonInline = getResources().getDrawable(R.drawable.button);
+        btn_confirm.setBackground(buttonInline);
+        EditText birthdayEdit = txt_birthday.getEditText();
 
 
-        txt_birthday.setOnClickListener(new View.OnClickListener() {
+        birthdayEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
@@ -88,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                txt_birthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                                txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
                             }
                         }, year, month, day);
                 picker.show();
@@ -104,9 +107,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void confirmDetails(View view) {
-        boolean validation = validateFirstname() && validateSurname() && validateEmail() && validatePassword() && validateReenterPassword();
+        boolean validation = validateFirstname() && validateSurname() && validateEmail() && validatePassword();
 
-        if(validation) {
+        if (validation) {
             String email = txt_email.getEditText().getText().toString();
             String password = txt_password.getEditText().getText().toString();
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -118,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Map<String, Object> user = new HashMap<>();
                     user.put("first", txt_firstname.getEditText().getText().toString());
                     user.put("last", txt_surname.getEditText().getText().toString());
-                    user.put("dob", txt_birthday.getText().toString());
+                    user.put("dob", txt_birthday.getEditText().getText().toString());
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -136,7 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
                 }
             });
-        }else{
+        } else {
             Toast.makeText(RegisterActivity.this, "Registration Unsuccessful", Toast.LENGTH_SHORT).show();
         }
     }
@@ -154,10 +157,10 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateFirstname() {
         String firstName = txt_firstname.getEditText().getText().toString();
 
-        if(firstName.isEmpty()) {
+        if (firstName.isEmpty()) {
             txt_firstname.setError("Field can't be empty");
             return false;
-        }else {
+        } else {
             txt_firstname.setError(null);
             return true;
         }
@@ -166,10 +169,10 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateSurname() {
         String surname = txt_surname.getEditText().getText().toString();
 
-        if(surname.isEmpty()) {
+        if (surname.isEmpty()) {
             txt_surname.setError("Field can't be empty");
             return false;
-        }else {
+        } else {
             txt_surname.setError(null);
             return true;
         }
@@ -178,13 +181,13 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateEmail() {
         String email = txt_email.getEditText().getText().toString();
 
-        if(email.isEmpty()) {
+        if (email.isEmpty()) {
             txt_email.setError("Field can't be empty");
             return false;
-        }else if(!email.matches(emailPattern)) {
+        } else if (!email.matches(emailPattern)) {
             txt_email.setError("Please enter a valid email");
             return false;
-        }else{
+        } else {
             txt_email.setError(null);
             return true;
         }
@@ -193,19 +196,20 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validatePassword() {
         String password = txt_password.getEditText().getText().toString();
 
-        if(password.isEmpty()) {
+        if (password.isEmpty()) {
             txt_password.setError("Field can't be empty");
             return false;
-        } else if(!PASSWORD_PATTERN.matcher(password).matches()) {
+        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
             txt_password.setError("Password too weak");
             return false;
-        }else{
+        } else {
             txt_password.setError(null);
             return true;
         }
     }
+}
 
-    private boolean validateReenterPassword() {
+    /*private boolean validateReenterPassword() {
         String reenterPassword = txt_reenterPassword.getEditText().getText().toString();
         String password = txt_password.getEditText().getText().toString();
 
@@ -220,4 +224,4 @@ public class RegisterActivity extends AppCompatActivity {
             return true;
         }
     }
-}
+}*/
