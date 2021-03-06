@@ -48,9 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="80dp"
-            app:boxBackgroundColor="@color/cardview_dark_background"
-            android:layout_marginRight="40dp">
+            app:boxBackgroundColor="@color/cardview_dark_background">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -87,6 +87,7 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cornerRadius="60dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="70dp"
             android:layout_marginRight="40dp"
@@ -100,8 +101,13 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="40dp"
-            android:background="@drawable/button_outline"
-            android:text="Register" />
+            android:text="Register"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/cardview_dark_background"
+            app:cornerRadius="60dp"
+            app:iconPadding="10dp"
+            app:strokeColor="@color/emerald"
+            app:strokeWidth="2dp" />
 
     </LinearLayout>
 

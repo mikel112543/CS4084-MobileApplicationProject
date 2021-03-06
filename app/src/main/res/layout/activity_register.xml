@@ -91,6 +91,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="40dp"
+            app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@color/cardview_dark_background">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -123,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="40dp"
+            app:cornerRadius="60dp"
             android:layout_marginRight="40dp"
             android:background="@drawable/button"
             android:text="Confirm" />

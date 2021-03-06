@@ -52,11 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         txt_passReset = findViewById(R.id.txt_passReset);
         loginButton = findViewById(R.id.btn_login);
 
-        Drawable outline = getResources().getDrawable(R.drawable.button_outline);
         Drawable buttonInline = getResources().getDrawable(R.drawable.button);
 
-        registerButton.setBackground(outline);
         loginButton.setBackground(buttonInline);
+        registerButton.setPadding(10,10,10,10);
 
         auth = FirebaseAuth.getInstance();
 
