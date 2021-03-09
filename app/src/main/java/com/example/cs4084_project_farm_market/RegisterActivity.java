@@ -200,7 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
             txt_password.setError("Field can't be empty");
             return false;
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            txt_password.setError("Password too weak");
+            txt_password.setError("Password must contain at least 4 characters, with one being a special character");
             return false;
         } else {
             txt_password.setError(null);
