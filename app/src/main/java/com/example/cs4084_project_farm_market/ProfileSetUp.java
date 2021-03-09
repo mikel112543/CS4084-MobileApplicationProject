@@ -59,7 +59,6 @@ public class ProfileSetUp extends AppCompatActivity {
         });
 
     }
-
     private void pickImageFromGallery() {
         //intent to pick image
         Intent intent = new Intent(Intent.ACTION_PICK);
