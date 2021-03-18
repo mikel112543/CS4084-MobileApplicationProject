@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CS4084_Project_Farm_Market</string>
+    <string name="firstname">Firstname</string>
 </resources>
