@@ -36,7 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_login);
+        
         auth = FirebaseAuth.getInstance();
 
         /*if (auth.getCurrentUser() != null) {
@@ -44,13 +45,14 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }*/
 
-        setContentView(R.layout.activity_login);
+
 
         txt_email = findViewById(R.id.txt_email);
         txt_password = findViewById(R.id.txt_password);
-        registerButton = findViewById(R.id.btn_register);
         txt_passReset = findViewById(R.id.txt_passReset);
+
         loginButton = findViewById(R.id.btn_login);
+        registerButton = findViewById(R.id.btn_register);
 
         Drawable buttonInline = getResources().getDrawable(R.drawable.button);
 
@@ -59,26 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
+        registerButton.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        txt_passReset.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, PasswordResetActivity.class)));
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmLogin(v);
-            }
-        });
-
-        txt_passReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, PasswordResetActivity.class));
-            }
-        });
+        loginButton.setOnClickListener(v -> confirmLogin(v));
     }
 
 
