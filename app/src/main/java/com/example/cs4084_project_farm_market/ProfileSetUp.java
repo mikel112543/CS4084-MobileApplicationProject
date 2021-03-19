@@ -32,12 +32,14 @@ public class ProfileSetUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_set_up);
 
+        /*
         //Get the intent from mainActivity that started this activity and extract the string
         Intent intent = getIntent();
         String name = intent.getStringExtra(RegisterActivity.EXTRA_WELCOME_MESSAGE);
         TextView welcomeMessage = findViewById(R.id.welcomeText);
         welcomeMessage.setText("WELCOME TO FARMPIRE " + name + "!!");
 
+        */
         //VIEWS
         chooseUserProfilePicButton = findViewById(R.id.chooseProfilePicButton);
         userProfilePic = findViewById(R.id.profilePicture);
@@ -84,6 +86,8 @@ public class ProfileSetUp extends AppCompatActivity {
                 //permission was denied
                 Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "requestCode denied...!", Toast.LENGTH_SHORT).show();
         }
     }
 
