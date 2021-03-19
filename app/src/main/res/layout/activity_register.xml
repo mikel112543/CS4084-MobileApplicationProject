@@ -12,12 +12,12 @@
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
         android:scaleType="centerCrop"
-        android:tint="@color/emerald"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/ic_launcher_background"
+        app:tint="@color/emerald" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -43,7 +43,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_firstname"
             android:layout_width="match_parent"
-            android:layout_height="62dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="60dp"
@@ -56,7 +56,6 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_constraintTop_toTopOf="parent"
                 android:layout_height="wrap_content"
                 android:hint="Firstname"
                 android:inputType="textCapSentences"
