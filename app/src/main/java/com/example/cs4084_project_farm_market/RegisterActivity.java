@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final String EXTRA_WELCOME_MESSAGE = "ie.ul.CS4048-MobileApplicationProject.EXTRA_MESSAGE";
+
     public static final String TAG = "TAG";
     private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_reenterPassword, txt_birthday;
     private Button btn_confirm;
@@ -79,31 +81,23 @@ public class RegisterActivity extends AppCompatActivity {
         EditText birthdayEdit = txt_birthday.getEditText();
 
 
-        birthdayEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
+        birthdayEdit.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
 
-                DatePickerDialog picker = new DatePickerDialog(RegisterActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
+            DatePickerDialog picker = new DatePickerDialog(RegisterActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                        }
+                    }, year, month, day);
+            picker.show();
         });
 
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDetails(v);
-            }
-        });
+        btn_confirm.setOnClickListener(v -> confirmDetails(v));
     }
 
     public void confirmDetails(View view) {
@@ -122,21 +116,24 @@ public class RegisterActivity extends AppCompatActivity {
                     user.put("first", txt_firstname.getEditText().getText().toString());
                     user.put("last", txt_surname.getEditText().getText().toString());
                     user.put("dob", txt_birthday.getEditText().getText().toString());
+                    //Fail Handler
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "User Profile successfully created for " + userID);
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                            //EditText editTextFirstName = (EditText) findViewById(R.id.txt_firstname);
+                            String name = txt_firstname.getEditText().getText().toString();
+
+                            Intent intent = new Intent(RegisterActivity.this, ProfileSetUp.class);
+                            intent.putExtra(EXTRA_WELCOME_MESSAGE,name);
+
+
                             startActivity(intent);
                             finish();
                         }
                     })
-                            .addOnFailureListener(new OnFailureListener() {         //Fail Handler
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
+                            .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
                 }
             });
         } else {
@@ -200,7 +197,7 @@ public class RegisterActivity extends AppCompatActivity {
             txt_password.setError("Field can't be empty");
             return false;
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            txt_password.setError("Password too weak");
+            txt_password.setError("Password must contain at least 4 characters, with one being a special character");
             return false;
         } else {
             txt_password.setError(null);
@@ -209,19 +206,4 @@ public class RegisterActivity extends AppCompatActivity {
     }
 }
 
-    /*private boolean validateReenterPassword() {
-        String reenterPassword = txt_reenterPassword.getEditText().getText().toString();
-        String password = txt_password.getEditText().getText().toString();
 
-        if (reenterPassword.isEmpty()) {
-            txt_reenterPassword.setError("Field can't be empty");
-            return false;
-        }else if(!reenterPassword.equals(password)) {
-            txt_reenterPassword.setError("Passwords do not match");
-            return false;
-        }else{
-            txt_reenterPassword.setError(null);
-            return true;
-        }
-    }
-}*/
