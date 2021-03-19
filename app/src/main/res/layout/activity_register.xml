@@ -33,12 +33,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="150dp"
         android:background="@drawable/curve_rec"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_firstname"
@@ -56,9 +56,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:layout_constraintTop_toTopOf="parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
                 android:hint="Firstname"
+                android:inputType="textCapSentences"
 
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -80,8 +81,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
                 android:hint="Surname"
+                android:inputType="textCapSentences"
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
