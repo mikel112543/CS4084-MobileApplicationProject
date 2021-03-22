@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.CS4084_Project_Farm_Market" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/emerald</item>
+        <item name="colorPrimary">@color/royalpurple</item>
         <item name="colorPrimaryVariant">#8BC34A</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">#2D8830</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/royalpurple</item>
         <!-- Customize your theme here. -->
         <item name="colorAccent">#2D8830</item>
     </style>
