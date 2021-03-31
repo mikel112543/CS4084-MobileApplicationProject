@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="toolbar_style" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">50sp</item>
+    </style>
+</resources>

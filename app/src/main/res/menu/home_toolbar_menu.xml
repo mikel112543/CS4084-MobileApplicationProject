@@ -6,6 +6,6 @@
         android:id="@+id/profile_btn"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="Profile"
-        app:showAsAction = "always"/>
+        app:showAsAction="always" />
 
 </menu>

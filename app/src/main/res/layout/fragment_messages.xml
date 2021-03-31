@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/royalpurple">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/messages_toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        app:layout_constraintBottom_toTopOf="@+id/home_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="160dp"
+        android:background="@color/royalpurple"
+        android:id="@+id/appBarLayout">
 
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            app:title="Messages"
+            app:expandedTitleTextAppearance="@style/toolbar_style"
+            app:contentScrim="@color/royalpurple">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/messages_card"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/messages_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/royalpurple"
+                app:itemIconTint="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:menu="@menu/home_toolbar_menu" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/curve_rec"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Messages Fragment"
-            android:textAlignment="center"
-            android:textSize="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non euismod mi. Mauris id pretium ligula, nec blandit dui. Nam laoreet orci sed elementum vulputate. Vivamus sed tortor est. Nullam tincidunt tempor metus, vel pharetra quam congue ut. Cras commodo mauris id urna elementum accumsan. Donec ut lacinia metus. Cras ipsum purus, consequat eu sodales sed, pharetra et justo.
+Fusce lobortis efficitur dui ut porttitor. Duis et aliquet dui. Phasellus commodo volutpat nisl vitae posuere. Nam finibus massa eget volutpat rhoncus. Nullam nulla sem, luctus in dolor et, ultrices tristique turpis. Aenean feugiat erat orci, a pharetra sem luctus nec. Aenean fringilla, nibh ut porttitor tempor, dolor turpis pharetra lorem, quis tincidunt lectus nunc eget turpis. Nullam posuere sit amet neque sit amet efficitur. In dolor felis, sollicitudin ut neque eget, iaculis sodales urna."
+            android:textSize="40sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
