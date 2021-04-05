@@ -29,18 +29,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
     public static final String TAG = "TAG";
-    private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_reenterPassword, txt_birthday;
-    private Button btn_confirm;
+    private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_birthday;
     private FirebaseAuth auth;
     private String userID;
-    public FirebaseFirestore db;
-
-    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private FirebaseFirestore db;
 
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
@@ -57,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Registration");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registration");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -67,36 +65,18 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         txt_firstname = findViewById(R.id.txt_firstname);
-        txt_surname = findViewById(R.id.txt_firstname);
+        txt_surname = findViewById(R.id.txt_lastname);
         txt_email = findViewById(R.id.txt_registerEmail);
         txt_password = findViewById(R.id.txt_registerPassword);
-        //txt_reenterPassword = findViewById(R.id.txt_reenterPassword);
         txt_birthday = findViewById(R.id.txt_birthday);
-        btn_confirm = findViewById(R.id.btn_registerConfirm);
+        EditText birthdayEdit = txt_birthday.getEditText();
+
+        birthdayEdit.setOnClickListener(birthdayOnClickListener);
+
+        Button btn_confirm = findViewById(R.id.btn_registerConfirm);
 
         Drawable buttonInline = getResources().getDrawable(R.drawable.button);
         btn_confirm.setBackground(buttonInline);
-        EditText birthdayEdit = txt_birthday.getEditText();
-
-
-        birthdayEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-
-                DatePickerDialog picker = new DatePickerDialog(RegisterActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
-        });
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +85,26 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    private View.OnClickListener birthdayOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
+
+            DatePickerDialog picker = new DatePickerDialog(RegisterActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                        }
+                    }, year, month, day);
+            picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            picker.show();
+        }
+    };
 
     public void confirmDetails(View view) {
         boolean validation = validateFirstname() && validateSurname() && validateEmail() && validatePassword();
@@ -181,6 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateEmail() {
         String email = txt_email.getEditText().getText().toString();
 
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         if (email.isEmpty()) {
             txt_email.setError("Field can't be empty");
             return false;
@@ -208,20 +209,3 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 }
-
-    /*private boolean validateReenterPassword() {
-        String reenterPassword = txt_reenterPassword.getEditText().getText().toString();
-        String password = txt_password.getEditText().getText().toString();
-
-        if (reenterPassword.isEmpty()) {
-            txt_reenterPassword.setError("Field can't be empty");
-            return false;
-        }else if(!reenterPassword.equals(password)) {
-            txt_reenterPassword.setError("Passwords do not match");
-            return false;
-        }else{
-            txt_reenterPassword.setError(null);
-            return true;
-        }
-    }
-}*/

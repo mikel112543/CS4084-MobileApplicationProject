@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/royalpurple">
 
-    <com.google.android.material.appbar.AppBarLayout
+ <!--   <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:background="@color/royalpurple"
@@ -52,7 +52,7 @@
 Fusce lobortis efficitur dui ut porttitor. Duis et aliquet dui. Phasellus commodo volutpat nisl vitae posuere. Nam finibus massa eget volutpat rhoncus. Nullam nulla sem, luctus in dolor et, ultrices tristique turpis. Aenean feugiat erat orci, a pharetra sem luctus nec. Aenean fringilla, nibh ut porttitor tempor, dolor turpis pharetra lorem, quis tincidunt lectus nunc eget turpis. Nullam posuere sit amet neque sit amet efficitur. In dolor felis, sollicitudin ut neque eget, iaculis sodales urna."
             android:textSize="40sp" />
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
