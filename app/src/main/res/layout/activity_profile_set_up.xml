@@ -23,41 +23,75 @@
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:drawableTint="#E30B0B"
         android:editable="true"
         android:enabled="false"
         android:fontFamily="sans-serif-black"
+        android:gravity="center"
         android:text="FARMPIRE"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="40dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottomText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarProfileSetUp" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineTopText" />
 
     <ImageView
         android:id="@+id/profilePicture"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="84dp"
-        app:layout_constraintBottom_toTopOf="@+id/chooseProfilePicButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText"
-        app:layout_constraintVertical_bias="0.0"
         android:background="@drawable/button"
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineBottomText"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
         android:id="@+id/chooseProfilePicButton"
-        android:layout_width="400dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="340dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Choose profile picture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineChooseProfilePicButton" />
+
+    <Button
+        android:id="@+id/continueToLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickLocationActivity"
+        android:text="Continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineContinueButton"
+        app:layout_constraintVertical_bias="0.238" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".10"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".30"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineChooseProfilePicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".70"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineContinueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".80"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

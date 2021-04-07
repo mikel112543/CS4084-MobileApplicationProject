@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
+import java.util.ServiceConfigurationError;
 
 public class ProfileSetUp extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class ProfileSetUp extends AppCompatActivity {
 
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+    private static final ImageView PROFILE_PICTURE = null;
 
 
     @Override
@@ -32,14 +34,13 @@ public class ProfileSetUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_set_up);
 
-        /*
         //Get the intent from mainActivity that started this activity and extract the string
         Intent intent = getIntent();
         String name = intent.getStringExtra(RegisterActivity.EXTRA_WELCOME_MESSAGE);
         TextView welcomeMessage = findViewById(R.id.welcomeText);
         welcomeMessage.setText("WELCOME TO FARMPIRE " + name + "!!");
 
-        */
+
         //VIEWS
         chooseUserProfilePicButton = findViewById(R.id.chooseProfilePicButton);
         userProfilePic = findViewById(R.id.profilePicture);
@@ -66,6 +67,8 @@ public class ProfileSetUp extends AppCompatActivity {
                 pickImageFromGallery();
             }
         });
+
+
 
     }
     private void pickImageFromGallery() {
@@ -99,4 +102,12 @@ public class ProfileSetUp extends AppCompatActivity {
             userProfilePic.setImageURI(data.getData());
         }
     }
+
+    //Continue to Set Location
+    public void onClickLocationActivity(View view){
+        Intent intent = new Intent(this, SetLocationActivity.class);
+        startActivity(intent);
+    }
+
+
 }

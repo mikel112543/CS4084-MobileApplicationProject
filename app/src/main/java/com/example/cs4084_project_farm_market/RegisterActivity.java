@@ -122,9 +122,8 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "User Profile successfully created for " + userID);
 
-                            //EditText editTextFirstName = (EditText) findViewById(R.id.txt_firstname);
+                            //"Welcome to FARMPIRE + name "
                             String name = txt_firstname.getEditText().getText().toString();
-
                             Intent intent = new Intent(RegisterActivity.this, ProfileSetUp.class);
                             intent.putExtra(EXTRA_WELCOME_MESSAGE,name);
 
