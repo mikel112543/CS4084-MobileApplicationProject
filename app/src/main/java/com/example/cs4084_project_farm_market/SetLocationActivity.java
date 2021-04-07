@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 public class SetLocationActivity extends AppCompatActivity {
+
+    private ImageView profilePicture;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
