@@ -2,6 +2,7 @@ package com.example.cs4084_project_farm_market;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +25,7 @@ public class HomeFragment extends Fragment {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference listingRef = db.collection("listings");
     private ListingAdapter adapter;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
 
     public HomeFragment() {
@@ -36,8 +40,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View mView = inflater.inflate(R.layout.fragment_home, container, false);
+
         setUpRecyclerView(mView);
         FirebaseFirestore.setLoggingEnabled(true);
         return mView;

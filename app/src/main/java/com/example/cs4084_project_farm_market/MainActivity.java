@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private final View.OnClickListener floatingButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            startActivity(new Intent(MainActivity.this, NewListingActivity.class));
+            finish();
 
         }
     };
