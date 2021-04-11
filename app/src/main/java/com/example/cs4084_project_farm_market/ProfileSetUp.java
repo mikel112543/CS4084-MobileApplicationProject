@@ -35,7 +35,7 @@ public class ProfileSetUp extends AppCompatActivity {
     private ImageView userProfilePic ;
     private Button chooseUserProfilePicButton ;
 
-    private static final int IMAGE_PICK_CODE = 1000;
+        private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private static final ImageView PROFILE_PICTURE = null;
     StorageReference storageReference;
@@ -52,6 +52,8 @@ public class ProfileSetUp extends AppCompatActivity {
         String name = intent.getStringExtra(RegisterActivity.EXTRA_WELCOME_MESSAGE);
         TextView welcomeMessage = findViewById(R.id.welcomeText);
         welcomeMessage.setText("Hello, " + name + "!!");
+
+
 
 
         //VIEWS
