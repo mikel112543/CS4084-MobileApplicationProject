@@ -1,11 +1,13 @@
 package com.example.cs4084_project_farm_market;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAdapter.ListingHolder> {
 
@@ -47,7 +50,11 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
         holder.listingTitle.setText(model.getTitle());
         holder.listingLocation.setText(model.getLocation());
         holder.listingDate.setText(model.getDate());
-        holder.listingPrice.setText(model.getPrice());
+        holder.listingPrice.setText(String.format("€%s", model.getPrice()));
+        Picasso.get().load(model.getImageUrl())
+                .fit()
+                .centerCrop()
+                .into(holder.listingImage);
 
     }
 
@@ -64,6 +71,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
         TextView listingLocation;
         TextView listingDate;
         TextView listingPrice;
+        ImageView listingImage;
         Button saveButton;
 
         public ListingHolder(@NonNull View itemView) {
@@ -72,6 +80,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
             listingLocation = itemView.findViewById(R.id.location_text);
             listingDate = itemView.findViewById(R.id.dateCreated_text);
             listingPrice = itemView.findViewById(R.id.listing_price);
+            listingImage = itemView.findViewById(R.id.listing_image);
             saveButton = itemView.findViewById(R.id.save_button);
 
             itemView.setOnClickListener(new View.OnClickListener() {
