@@ -47,7 +47,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
         holder.listingTitle.setText(model.getTitle());
         holder.listingLocation.setText(model.getLocation());
         holder.listingDate.setText(model.getDate());
-        holder.listingPrice.setText(String.valueOf(model.getPrice()));
+        holder.listingPrice.setText(model.getPrice());
 
     }
 

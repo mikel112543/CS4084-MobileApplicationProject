@@ -61,7 +61,7 @@
         android:clipToPadding="false"
         android:background="@drawable/curve_rec"
         android:paddingBottom="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
     <FrameLayout

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
 
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        newListingButton = findViewById(R.id.new_listing_button);
+        newListingButton = (FloatingActionButton) findViewById(R.id.new_listing_button);
         newListingButton.setOnClickListener(floatingButtonOnClickListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();

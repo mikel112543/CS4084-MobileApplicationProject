@@ -7,18 +7,52 @@ import java.util.Date;
 public class Listing {
     private String title;
     private String location;
+    private String imageUrl;
+    private String description;
     private String date;
-    private int price;
+    private String time;
+    private String price;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public Listing() {
     }
 
-    public Listing(String title, String location, String date, int price) {
+
+    public Listing(String title, String location, String imageUrl, String description, String date, String time, String price) {
 
 
         this.title = title;
-
         this.location = location;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.time = time;
         this.date = date;
         this.price = price;
     }
@@ -48,11 +82,11 @@ public class Listing {
         this.date = date;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 }
