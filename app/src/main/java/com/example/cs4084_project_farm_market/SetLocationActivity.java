@@ -55,7 +55,7 @@ public class SetLocationActivity extends AppCompatActivity {
 
     public static final double LONGITUDE = 1001;
     public static final double LATITUDE = 1000;
-    FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    FirebaseAuth fAuth ;
     private FirebaseFirestore fStore;
     private String userId;
     private FirebaseAuth auth;
@@ -71,7 +71,7 @@ public class SetLocationActivity extends AppCompatActivity {
     //Initialize variable
     private Button btLocation;
     private Button btGmaps;
-    private TextView textViewForAddress;
+    public TextView textViewForAddress, addressFromMaps;
     FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
@@ -207,14 +207,16 @@ public class SetLocationActivity extends AppCompatActivity {
 
     public void onClickSecurityActivity(View view){
         Intent intent2 = new Intent(SetLocationActivity.this, SecurityActivity.class);
-        /*
-        userId = auth.getCurrentUser().getUid();
+
+        userId = fAuth.getCurrentUser().getUid();
         DocumentReference documentReference = fStore.collection("users").document(userId);
         Map<String, Object> user = new HashMap<>();
-        user.put("address", textViewForAddress.getText().toString());
+        addressFromMaps = findViewById(R.id.addressFromMaps);
+        user.put("address", addressFromMaps.getText().toString());
+        documentReference.set(user);
 
 
-         */
+
         startActivity(intent2);
 
 

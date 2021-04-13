@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.hardware.biometrics.BiometricPrompt.*;
 import android.os.Bundle;
 import android.view.View;
@@ -49,8 +50,8 @@ public class SecurityActivity extends AppCompatActivity {
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 //error authenticating stop tasks that require authentication
-                authStatus.setText("Authentication error: " +errString);
-                Toast.makeText(SecurityActivity.this, "Authentication error: " +errString, Toast.LENGTH_SHORT).show();
+                authStatus.setText("Authentication error: " + errString);
+                Toast.makeText(SecurityActivity.this, "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -85,8 +86,12 @@ public class SecurityActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-
-
+    //Continue to Set Location
+    public void onClickProfileActivity(View view) {
+        Intent intent = new Intent(this, UserProfile.class);
+        startActivity(intent);
     }
 }
+

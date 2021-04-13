@@ -111,10 +111,10 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                     userID = auth.getCurrentUser().getUid();
-                    DocumentReference documentReference = db.collection("users").document(userID);  //Create document linking to Users unique ID
+                    DocumentReference documentReference = db.collection("users").document(userID);  //Create document linking to GlobalUsers unique ID
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first", txt_firstname.getEditText().getText().toString());
-                    user.put("last", txt_surname.getEditText().getText().toString());
+                    user.put("firstName", txt_firstname.getEditText().getText().toString());
+                    user.put("lastName", txt_surname.getEditText().getText().toString());
                     user.put("dob", txt_birthday.getEditText().getText().toString());
                     //Fail Handler
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -123,9 +123,9 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "User Profile successfully created for " + userID);
 
                             //"Welcome to FARMPIRE + name "
-                            String name = txt_firstname.getEditText().getText().toString();
+                            String fname = txt_firstname.getEditText().getText().toString();
                             Intent intent = new Intent(RegisterActivity.this, ProfileSetUp.class);
-                            intent.putExtra(EXTRA_WELCOME_MESSAGE,name);
+                            intent.putExtra(EXTRA_WELCOME_MESSAGE,fname);
 
 
                             startActivity(intent);
