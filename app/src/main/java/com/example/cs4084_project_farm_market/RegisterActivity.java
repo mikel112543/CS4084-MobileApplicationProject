@@ -98,6 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         btn_confirm.setOnClickListener(v -> confirmDetails(v));
+
     }
 
     public void confirmDetails(View view) {
