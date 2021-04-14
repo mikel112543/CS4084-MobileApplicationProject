@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "810288331687",
+    "project_id": "cs4084-project-farm-market",
+    "storage_bucket": "cs4084-project-farm-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810288331687:android:a0dd95f8a22340e92b1482",
+        "android_client_info": {
+          "package_name": "com.example.cs4084_project_farm_market"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810288331687-20qbq7888i5nsr1olpjgiillm84f15vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKKMo6A7ans2RBJF04ucAbZ2z3mYTDdE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810288331687-20qbq7888i5nsr1olpjgiillm84f15vk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
