@@ -1,0 +1,31 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        app:icon="@drawable/ic_baseline_settings_24"
+        app:title="Settings">
+
+        <SwitchPreferenceCompat
+            app:key="Notifications"
+            app:summaryOff="Notifications are disabled"
+            app:summaryOn="Notifications are enabled"
+            app:title="Notifications" />
+
+        <CheckBoxPreference
+            app:defaultValue="False"
+            app:key="NIGHT"
+            app:summaryOff="Night mode is deactivated"
+            app:summaryOn="Night mode is enabled"
+            app:title="Night mode" />
+
+        <Preference
+            app:fragment=".ChangePasswordFragment"
+            app:title="Change Password"/>
+
+
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
