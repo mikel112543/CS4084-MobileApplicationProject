@@ -45,10 +45,9 @@ import java.util.Map;
 public class NewListingActivity extends AppCompatActivity {
 
     private final int PICK_IMAGE_REQUEST = 22;
-    public static final String TAG = "TAG";
+    private static final String TAG = "TAG";
 
     private FirebaseAuth auth;
-    private FirebaseUser user;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -56,7 +55,6 @@ public class NewListingActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView pickedImage;
     private String userID;
-    private Listing listingModel;
     private String generatedFilePath;
 
 

@@ -12,17 +12,28 @@ public class Listing {
     private String date;
     private String time;
     private String price;   //Simple Listing POJO
+    private String userID;
 
-    public Listing(String title, String location, String imageUrl, String description, String date, String time, String price) {
+    public Listing() {
+    }
 
-
+    public Listing(String title, String location, String imageUrl, String description, String date, String time, String price, String userID) {
         this.title = title;
         this.location = location;
         this.imageUrl = imageUrl;
         this.description = description;
-        this.time = time;
         this.date = date;
+        this.time = time;
         this.price = price;
+        this.userID = userID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
 
@@ -84,9 +95,6 @@ public class Listing {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public Listing() {
     }
 
 }

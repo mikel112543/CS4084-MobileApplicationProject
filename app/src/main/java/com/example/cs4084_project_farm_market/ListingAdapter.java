@@ -36,8 +36,8 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
         void onButtonClick(DocumentSnapshot documentSnapshot, int position);
     }
 
-    public void setOnButtonClickListener(OnButtonClickListener buttonClickListenr) {
-        this.buttonClickListener = buttonClickListenr;
+    public void setOnButtonClickListener(OnButtonClickListener buttonClickListener) {
+        this.buttonClickListener = buttonClickListener;
     }
 
 

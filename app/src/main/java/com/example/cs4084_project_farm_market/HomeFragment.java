@@ -1,5 +1,7 @@
 package com.example.cs4084_project_farm_market;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +28,8 @@ public class HomeFragment extends Fragment {
     private final CollectionReference listingRef = db.collection("listings");
     private ListingAdapter adapter;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
 
 
     public HomeFragment() {
@@ -41,6 +45,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_home, container, false);
+        toolbar = mView.findViewById(R.id.home_toolbar);
+        collapsingToolbarLayout = getActivity().findViewById(R.id.collapsing_toolbar);
 
         setUpRecyclerView(mView);
         FirebaseFirestore.setLoggingEnabled(true);
@@ -49,7 +55,7 @@ public class HomeFragment extends Fragment {
 
     private void setUpRecyclerView(View view) {
 
-        Query query = listingRef;
+        Query query = listingRef.orderBy("date", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Listing> options = new FirestoreRecyclerOptions.Builder<Listing>()
                 .setQuery(query, Listing.class)
@@ -67,16 +73,22 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Listing listing = documentSnapshot.toObject(Listing.class);
+                Intent intent = new Intent(getActivity(), ExpandedListing.class);
                 String id = documentSnapshot.getId();
-                Toast.makeText(getContext(), "Position: " + position + "ID: " + id, Toast.LENGTH_LONG).show();
+                intent.putExtra("documentId", id);
+                startActivity(intent);
+
 
             }
         });
         adapter.setOnButtonClickListener(new ListingAdapter.OnButtonClickListener() {
             @Override
             public void onButtonClick(DocumentSnapshot documentSnapshot, int position) {
-                String id = documentSnapshot.getId();
-                Toast.makeText(getContext(), "Listing saved!" + "Position: " + position + "ID: " + id, Toast.LENGTH_LONG).show();
+                Listing listing = documentSnapshot.toObject(Listing.class);
+                String title = listing.getTitle();
+                String description = listing.getDescription();
+                String price = listing.getPrice();
+                String imageUrl = listing.getImageUrl();
 
             }
         });
