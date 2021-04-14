@@ -16,6 +16,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,6 +53,9 @@ import java.util.Map;
 public class SetLocationActivity extends AppCompatActivity {
 
     private ImageView profilePicture;
+    private String userID;
+    public static final String TAG = "TAG";
+
 
     public static final double LONGITUDE = 1001;
     public static final double LATITUDE = 1000;
@@ -60,8 +64,10 @@ public class SetLocationActivity extends AppCompatActivity {
     private String userId;
     private FirebaseAuth auth;
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    DocumentReference noteRef ;
+    private User userModal;
 
-    private DatabaseReference databaseRef;
     private StorageReference storageRef;
 
     private double latitude;
@@ -144,6 +150,12 @@ public class SetLocationActivity extends AppCompatActivity {
                 }
             }
         });
+        auth = FirebaseAuth.getInstance();
+
+        userID = auth.getCurrentUser().getUid();
+
+
+        getLocation();
 
 
     }
@@ -195,7 +207,6 @@ public class SetLocationActivity extends AppCompatActivity {
     //Continue to Set google maps
     public void onClickGoogleMaps(View view){
         Intent intent = new Intent(SetLocationActivity.this, MapsActivity.class);
-        getLocation();
 
         intent.putExtra(String.valueOf(LONGITUDE),longitude);
         intent.putExtra(String.valueOf(LATITUDE),latitude);
@@ -208,18 +219,14 @@ public class SetLocationActivity extends AppCompatActivity {
     public void onClickSecurityActivity(View view){
         Intent intent2 = new Intent(SetLocationActivity.this, SecurityActivity.class);
 
-        userId = fAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        Map<String, Object> user = new HashMap<>();
         addressFromMaps = findViewById(R.id.addressFromMaps);
-        user.put("address", addressFromMaps.getText().toString());
-        documentReference.set(user);
-
-
+        db.collection("users")
+                .document(userId)
+                .update("address",addressFromMaps.getText().toString());
 
         startActivity(intent2);
-
-
     }
+
+
 
 }

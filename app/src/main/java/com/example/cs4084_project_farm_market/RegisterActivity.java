@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         txt_firstname = findViewById(R.id.txt_firstname);
-        txt_surname = findViewById(R.id.txt_firstname);
+        txt_surname = findViewById(R.id.txt_lastname);
         txt_email = findViewById(R.id.txt_registerEmail);
         txt_password = findViewById(R.id.txt_registerPassword);
         //txt_reenterPassword = findViewById(R.id.txt_reenterPassword);
@@ -116,6 +116,15 @@ public class RegisterActivity extends AppCompatActivity {
                     user.put("firstName", txt_firstname.getEditText().getText().toString());
                     user.put("lastName", txt_surname.getEditText().getText().toString());
                     user.put("dob", txt_birthday.getEditText().getText().toString());
+                    user.put("email", txt_email.getEditText().getText().toString());
+
+                    user.put("address", "tap to enter");
+                    user.put("number", "tap to enter");
+
+                    //addding details to firestore
+
+
+
                     //Fail Handler
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

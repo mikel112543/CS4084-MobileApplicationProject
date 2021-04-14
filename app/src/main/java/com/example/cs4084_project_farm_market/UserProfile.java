@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +25,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class UserProfile extends AppCompatActivity {
@@ -38,6 +46,7 @@ public class UserProfile extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference noteRef ;
     private User userModal;
+    private StorageReference storageRef;
 
 
     @Override
@@ -51,10 +60,7 @@ public class UserProfile extends AppCompatActivity {
         address_id = findViewById(R.id.homeAddress_ID);
         photoUrl_id = findViewById(R.id.userProfilePicture_ID);
 
-        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();*/
-
         auth = FirebaseAuth.getInstance();
-
         userID = auth.getCurrentUser().getUid();
 
         //Toolbar
@@ -64,9 +70,28 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        storageRef = FirebaseStorage.getInstance().getReference().child("users/" + userID + "/profile.jpg");
+        try {
+            final File localFile = File.createTempFile("profile", "jpg");
+            storageRef.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(UserProfile.this, "Found your profile picture", Toast.LENGTH_SHORT).show();
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            ((ImageView) findViewById(R.id.userProfilePicture_ID)).setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(UserProfile.this, "No Profile picture located, go back to enter", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         getRegInfo();
-
-
 
     }
 
@@ -100,6 +125,10 @@ public class UserProfile extends AppCompatActivity {
                     }
                 });
     }
+
+
+
+
 
 
 

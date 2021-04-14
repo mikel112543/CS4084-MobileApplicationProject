@@ -1,5 +1,6 @@
 package com.example.cs4084_project_farm_market;
 
+import android.content.Intent;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -8,6 +9,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class User {
+
+
 
     private String firstName, lastName, address, email, number, dob;
     private Uri url;
