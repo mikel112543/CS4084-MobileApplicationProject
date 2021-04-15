@@ -6,6 +6,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,12 +21,15 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private FloatingActionButton newListingButton;
+    private MenuItem profileButton;
+    private boolean showSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +49,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.home_toolbar_menu, menu);
         return true;
+    }
+
+    /**
+     * @param item OnClick Listener for Menu Item based off the Menu Item ID
+     * @return UserID is passed into intent to ProfilePage Activity
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.profile_btn) {
+            /*Intent intent = new Intent(MainActivity.this, ProfilePage.class);
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            intent.putExtra("UserID", userID);
+            startActivity(intent);*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private final MenuItem.OnMenuItemClickListener profileBtnListener = new MenuItem.OnMenuItemClickListener() {
@@ -80,21 +99,25 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new HomeFragment();
                             collapsingToolbarLayout.setTitle("Home");
                             newListingButton.setVisibility(View.VISIBLE);
+                            showSearch = false;
                             break;
                         case R.id.nav_search:
                             selectedFragment = new SearchFragment();
                             collapsingToolbarLayout.setTitle("Search");
                             newListingButton.setVisibility(View.GONE);
+                            showSearch = true;
                             break;
                         case R.id.nav_notification:
                             selectedFragment = new NotificationFragment();
                             collapsingToolbarLayout.setTitle("Notifications");
                             newListingButton.setVisibility(View.GONE);
+                            showSearch = false;
                             break;
                         case R.id.nav_messages:
                             selectedFragment = new MessagesFragment();
                             collapsingToolbarLayout.setTitle("Messages");
                             newListingButton.setVisibility(View.GONE);
+                            showSearch = false;
                             break;
 
                     }

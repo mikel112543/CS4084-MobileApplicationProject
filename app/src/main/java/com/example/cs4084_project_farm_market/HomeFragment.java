@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Listing listing = documentSnapshot.toObject(Listing.class);
                 Intent intent = new Intent(getActivity(), ExpandedListing.class);
                 String id = documentSnapshot.getId();
                 intent.putExtra("documentId", id);
