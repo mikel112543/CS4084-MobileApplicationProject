@@ -7,7 +7,7 @@
         app:title="Settings">
 
         <SwitchPreferenceCompat
-            app:key="Notifications"
+            app:key="NOTIFICATIONS"
             app:summaryOff="Notifications are disabled"
             app:summaryOn="Notifications are enabled"
             app:title="Notifications" />
