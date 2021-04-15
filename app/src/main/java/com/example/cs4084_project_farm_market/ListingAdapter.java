@@ -129,5 +129,4 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
             });
         }
     }
-
 }
