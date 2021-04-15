@@ -47,6 +47,7 @@ public class UserProfile extends AppCompatActivity {
     private TextView name_id;
     private EditText email_id, number_id, address_id;
     private ImageView photoUrl_id;
+    private String photoPath;
     private FirebaseAuth auth;
     private ImageButton edit;
     StorageReference storageReference;
@@ -129,6 +130,11 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(photoUrl_id);
+                photoPath = uri.toString();
+                db.collection("users")
+                        .document(userID)
+                        .update("imageUrl",photoPath);
+
             }
         });
 
@@ -182,7 +188,8 @@ public class UserProfile extends AppCompatActivity {
                 .document(userID)
                 .update("number",number_id.getText().toString(),
                         "email",email_id.getText().toString(),
-                        "address",address_id.getText().toString());
+                        "address",address_id.getText().toString(),
+                        "imageUrl",photoPath);
         getPicture();
         Toast.makeText(this, "Changes Saved", Toast.LENGTH_SHORT).show();
 
@@ -260,6 +267,12 @@ public class UserProfile extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(photoUrl_id);
+                        photoPath = uri.toString();
+                        db.collection("users")
+                                .document(userID)
+                                .update("imageUrl",photoPath);
+
+
                     }
                 });
             }

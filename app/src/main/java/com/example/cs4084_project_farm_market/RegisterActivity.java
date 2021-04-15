@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                     user.put("lastName", txt_surname.getEditText().getText().toString());
                     user.put("dob", txt_birthday.getEditText().getText().toString());
                     user.put("email", txt_email.getEditText().getText().toString());
-
+                    user.put("imageUrl", "to be found");
                     user.put("address", "tap to enter");
                     user.put("number", "tap to enter");
 

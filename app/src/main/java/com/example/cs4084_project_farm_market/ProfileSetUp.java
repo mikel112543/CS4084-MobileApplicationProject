@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,8 +35,11 @@ public class ProfileSetUp extends AppCompatActivity {
     //VIEWS
     private ImageView userProfilePic ;
     private Button chooseUserProfilePicButton ;
+    private String photoPath;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        private static final int IMAGE_PICK_CODE = 1000;
+
+    private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private static final ImageView PROFILE_PICTURE = null;
     StorageReference storageReference;
@@ -91,6 +95,10 @@ public class ProfileSetUp extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(userProfilePic);
+                photoPath = uri.toString();
+                db.collection("users")
+                        .document(fAuth.getCurrentUser().getUid())
+                        .update("imageUrl",photoPath);
             }
         });
 
@@ -144,6 +152,10 @@ public class ProfileSetUp extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(userProfilePic);
+                        photoPath = uri.toString();
+                        db.collection("users")
+                                .document(fAuth.getCurrentUser().getUid())
+                                .update("imageUrl",photoPath);
                     }
                 });
             }
