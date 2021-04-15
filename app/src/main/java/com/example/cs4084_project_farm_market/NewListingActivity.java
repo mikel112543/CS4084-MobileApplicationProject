@@ -62,7 +62,6 @@ public class NewListingActivity extends AppCompatActivity {
     private ImageView pickedImage;
     private String userID;
     private String generatedFilePath;
-    private String timePattern = "HH:mm";
     private DocumentReference documentReference;
 
 
@@ -189,6 +188,7 @@ public class NewListingActivity extends AppCompatActivity {
     private void saveListingToDB() {
 
         userID = auth.getCurrentUser().getUid();
+        String timePattern = "HH:mm";
 
         String date = LocalDate.now().toString();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(timePattern, Locale.ENGLISH);
