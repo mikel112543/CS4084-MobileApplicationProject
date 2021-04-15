@@ -1,9 +1,5 @@
 package com.example.cs4084_project_farm_market;
 
-import com.google.type.DateTime;
-
-import java.util.Date;
-
 public class Listing {
     private String title;
     private String location;

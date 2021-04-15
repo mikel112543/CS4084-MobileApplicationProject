@@ -26,6 +26,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,11 +36,16 @@ import com.google.gson.internal.$Gson$Preconditions;
 import com.google.type.DateTime;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Document;
+
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class NewListingActivity extends AppCompatActivity {
@@ -56,6 +62,8 @@ public class NewListingActivity extends AppCompatActivity {
     private ImageView pickedImage;
     private String userID;
     private String generatedFilePath;
+    private String timePattern = "HH:mm";
+    private DocumentReference documentReference;
 
 
     private Button uploadPhotoButton, submitButton;
@@ -72,6 +80,7 @@ public class NewListingActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         storageReference = storage.getReference("listings");
+        documentReference = db.collection("users").document(auth.getCurrentUser().getUid());
 
         uploadPhotoButton = findViewById(R.id.uploadPhotoButton);
         titleInput = findViewById(R.id.titleInput);
@@ -85,7 +94,9 @@ public class NewListingActivity extends AppCompatActivity {
 
     }
 
-    //Onclick for gallery
+    /**
+     * OnClick to upload user photo
+     */
     private final View.OnClickListener uploadPhotoButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -120,6 +131,21 @@ public class NewListingActivity extends AppCompatActivity {
         }
     }
 
+/*    private void getUserAddress() {
+        DocumentSnapshot currentUser = documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()) {
+
+                }
+            }
+        })
+    }*/
+
+
+    /**
+     * OnClick Listener for submit that handles listing submission.
+     */
     private final View.OnClickListener submitButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -131,6 +157,11 @@ public class NewListingActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * @param requestCode Predefined request code to check if image was picked correctly
+     * @param resultCode  Double checks result is ok
+     * @param data        Image data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -152,11 +183,16 @@ public class NewListingActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    /**
+     * Adds the newly created Listing to FireStore.
+     */
     private void saveListingToDB() {
 
         userID = auth.getCurrentUser().getUid();
+
         String date = LocalDate.now().toString();
-        String time = LocalTime.now().toString();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(timePattern, Locale.ENGLISH);
+        String time = simpleDateFormat.format(new Date());
         DocumentReference documentReference = db.collection("listings").document();
         Map<String, Object> listing = new HashMap<>();
         listing.put("userID", userID);
@@ -182,6 +218,9 @@ public class NewListingActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Upload image to Firebase database and gets image download Url ready to be saved to the db
+     */
     private void uploadImage() {
         if (imageUri != null) {
             StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -195,7 +234,7 @@ public class NewListingActivity extends AppCompatActivity {
                                     generatedFilePath = uri.toString();         //Task is Asynchronous so Success Listener must be created.
                                     saveListingToDB();
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {       //Fail Listnere for Download Url
+                            }).addOnFailureListener(new OnFailureListener() {       //Fail Listener for Download Url
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.w(TAG, "Error retreiving image url", e);

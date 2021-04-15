@@ -1,8 +1,6 @@
 package com.example.cs4084_project_farm_market;
 
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +17,15 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+//Firebase UI has its own powerful RecyclerAdapter
 public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAdapter.ListingHolder> {
 
     private OnItemClickListener listener;
     private OnButtonClickListener buttonClickListener;
 
+    /**
+     * Interface for onClick of card
+     */
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
@@ -32,19 +34,34 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
         this.listener = listener;
     }
 
+    /**
+     * Interface created for the button clicks here instead of implementation at the top of class
+     */
     public interface OnButtonClickListener {
         void onButtonClick(DocumentSnapshot documentSnapshot, int position);
     }
 
+    /**
+     * Setting onClick Listeners
+     *
+     * @param buttonClickListener
+     */
     public void setOnButtonClickListener(OnButtonClickListener buttonClickListener) {
         this.buttonClickListener = buttonClickListener;
     }
 
 
+    //Creates a list of options to display
     public ListingAdapter(@NonNull FirestoreRecyclerOptions<Listing> options) {
         super(options);
     }
 
+    /***
+     *
+     * @param holder object that will hold the view
+     * @param position position of card on screen so can listen for onCLicks
+     * @param model object to pull the data from
+     */
     @Override
     protected void onBindViewHolder(@NonNull ListingHolder holder, int position, @NonNull Listing model) {
         holder.listingTitle.setText(model.getTitle());
@@ -74,6 +91,9 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
         ImageView listingImage;
         Button saveButton;
 
+        /**
+         * Holder constructor to prepare view
+         */
         public ListingHolder(@NonNull View itemView) {
             super(itemView);
             listingTitle = itemView.findViewById(R.id.listing_title);
@@ -83,6 +103,8 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<Listing, ListingAda
             listingImage = itemView.findViewById(R.id.listing_image);
             saveButton = itemView.findViewById(R.id.save_button);
 
+
+            //Set onClicks ready to be called in fragment
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

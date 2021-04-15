@@ -16,15 +16,24 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.model.Document;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private FloatingActionButton newListingButton;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        newListingButton = (FloatingActionButton) findViewById(R.id.new_listing_button);
+        newListingButton = findViewById(R.id.new_listing_button);
         newListingButton.setOnClickListener(floatingButtonOnClickListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
@@ -45,13 +54,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /***
+     *
+     * @param menu pass in Menu and inflate according to the layout .xml
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.home_toolbar_menu, menu);
+        /*DocumentReference currentUserRef = db.collection("users").document(auth.getCurrentUser().getUid());*/
+        /*Document userDoc = currentUserRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    task.getResult().toObject(UserModal.class)
+                }
+            }
+        });*/
+        MenuItem ProfilePic = menu.getItem(0);
         return true;
     }
 
+    /**
+     * OnClick Listener to access Users profile
+     */
     private final MenuItem.OnMenuItemClickListener profileBtnListener = new MenuItem.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -61,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /***
+     * OnCLick listener for user to create new listing
+     */
     private final View.OnClickListener floatingButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -69,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /***
+     * Switch case to change fragments for bottom navigation view
+     */
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

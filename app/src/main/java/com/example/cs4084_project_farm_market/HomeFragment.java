@@ -27,9 +27,6 @@ public class HomeFragment extends Fragment {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference listingRef = db.collection("listings");
     private ListingAdapter adapter;
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private Toolbar toolbar;
-    private BottomNavigationView bottomNavigationView;
 
 
     public HomeFragment() {
@@ -45,14 +42,17 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_home, container, false);
-        toolbar = mView.findViewById(R.id.home_toolbar);
-        collapsingToolbarLayout = getActivity().findViewById(R.id.collapsing_toolbar);
-
         setUpRecyclerView(mView);
         FirebaseFirestore.setLoggingEnabled(true);
         return mView;
     }
 
+    /***
+     *
+     * @param view Inflated layout in parent activity
+     *             Firestore Recycler builds options from inputted query to the database
+     *
+     */
     private void setUpRecyclerView(View view) {
 
         Query query = listingRef.orderBy("date", Query.Direction.DESCENDING);
@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        //OnClick for Listing
         adapter.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -81,6 +82,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        //OnClick for save button
         adapter.setOnButtonClickListener(new ListingAdapter.OnButtonClickListener() {
             @Override
             public void onButtonClick(DocumentSnapshot documentSnapshot, int position) {
@@ -94,12 +96,18 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /***
+     * Adapter will start listening when on screen
+     */
     @Override
     public void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
+    /***
+     * Adapter will stop listening when off screen
+     */
     @Override
     public void onStop() {
         super.onStop();
