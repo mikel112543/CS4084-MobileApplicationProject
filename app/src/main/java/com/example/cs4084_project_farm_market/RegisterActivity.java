@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final String EXTRA_WELCOME_MESSAGE = "ie.ul.CS4048-MobileApplicationProject.EXTRA_MESSAGE";
+
     public static final String TAG = "TAG";
     private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_birthday;
     private FirebaseAuth auth;
@@ -119,24 +121,35 @@ public class RegisterActivity extends AppCompatActivity {
                     userID = auth.getCurrentUser().getUid();
                     DocumentReference documentReference = db.collection("users").document(userID);  //Create document linking to Users unique ID
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first", txt_firstname.getEditText().getText().toString());
-                    user.put("last", txt_surname.getEditText().getText().toString());
+                    user.put("firstName", txt_firstname.getEditText().getText().toString());
+                    user.put("lastName", txt_surname.getEditText().getText().toString());
                     user.put("dob", txt_birthday.getEditText().getText().toString());
+                    user.put("email", txt_email.getEditText().getText().toString());
+                    user.put("imageUrl", "to be found");
+                    user.put("address", "tap to enter");
+                    user.put("number", "tap to enter");
+
+                    //addding details to firestore
+
+
+
+                    //Fail Handler
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "User Profile successfully created for " + userID);
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                            //"Welcome to FARMPIRE + name "
+                            String fname = txt_firstname.getEditText().getText().toString();
+                            Intent intent = new Intent(RegisterActivity.this, ProfileSetUp.class);
+                            intent.putExtra(EXTRA_WELCOME_MESSAGE,fname);
+
+
                             startActivity(intent);
                             finish();
                         }
                     })
-                            .addOnFailureListener(new OnFailureListener() {         //Fail Handler
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
+                            .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
                 }
             });
         } else {
@@ -209,3 +222,5 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 }
+
+

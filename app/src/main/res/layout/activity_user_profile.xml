@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/set_up_background"
+    android:scrollbars="horizontal|vertical"
+    tools:context=".UserProfile">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarUserProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/userProfilePicture_ID"
+        android:layout_width="124dp"
+        android:layout_height="133dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/homeAddress_ID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username_ID"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/username_ID"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:gravity="center"
+        android:hint="Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarUserProfile"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <EditText
+        android:id="@+id/emailAddress_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:clickable="false"
+        android:editable="false"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/userProfilePicture_ID"
+        app:layout_constraintTop_toBottomOf="@+id/username_ID" />
+
+    <EditText
+        android:id="@+id/phoneNumber_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="42dp"
+        android:clickable="false"
+        android:ems="10"
+        android:hint="number"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@+id/homeAddress_ID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/userProfilePicture_ID"
+        app:layout_constraintTop_toBottomOf="@+id/emailAddress_ID"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/homeAddress_ID"
+        android:layout_width="310dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="176dp"
+        android:layout_marginBottom="10dp"
+        android:defaultFocusHighlightEnabled="false"
+        android:ems="10"
+        android:hint="Address"
+        android:inputType="textPostalAddress"
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username_ID" />
+
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="match_parent"
+        android:layout_height="262dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/screen_background_light"
+        app:tint="#E18BC34A" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="263dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="#8BC34A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/edit_icon"
+            android:foreground="@drawable/edit_icon"
+            android:padding="10dp"
+            app:cardBackgroundColor="#654CAF50">
+
+            <ImageButton
+                android:id="@+id/imageButtonSettings"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#654CAF50"
+                android:contentDescription="settings"
+                app:srcCompat="@drawable/settings_icon" />
+        </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="180dp"
+        app:cardBackgroundColor="#8BC34A"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/edit_icon"
+            android:foreground="@drawable/edit_icon"
+            app:cardBackgroundColor="#654CAF50">
+
+            <ImageButton
+                android:id="@+id/imageButtonEdit"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#654CAF50"
+                android:contentDescription="edit button"
+                app:srcCompat="@drawable/edit_icon" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView3"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="#8BC34A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="100dp"
+            android:layout_height="101dp"
+            android:layout_gravity="center"
+            android:background="@drawable/edit_icon"
+            android:foreground="@drawable/edit_icon"
+            android:padding="10dp"
+            app:cardBackgroundColor="#654CAF50">
+
+            <ImageButton
+                android:id="@+id/imageButtonHistory"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#654CAF50"
+                android:contentDescription="history button"
+                app:srcCompat="@drawable/history_icon" />
+        </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textViewEdit_ID"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Save changes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+    <TextView
+        android:id="@+id/textViewHistory_ID"
+        android:layout_width="130dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="History"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
+
+    <TextView
+        android:id="@+id/textViewSettings_ID"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
