@@ -22,15 +22,30 @@ public class SearchUserAdapter extends FirestoreRecyclerAdapter<UserModal, Searc
         void onProfileClick(DocumentSnapshot documentSnapshot, int position);
     }
 
+    /**
+     * Set up on OnClick Listeners
+     *
+     * @param listener
+     */
     public void setOnProfileClickListener(OnProfileClickListener listener) {
         this.listener = listener;
     }
 
 
+    /**
+     * List of options pull from Firestore
+     *
+     * @param options
+     */
     public SearchUserAdapter(@NonNull FirestoreRecyclerOptions<UserModal> options) {
         super(options);
     }
 
+    /**
+     * @param holder   to hold the information and display to recyclerview
+     * @param position postision of card on screen
+     * @param model    POJO of User Modal
+     */
     @Override
     protected void onBindViewHolder(@NonNull SearchUserAdapter.UserModalHolder holder, int position, @NonNull UserModal model) {
         holder.userName.setText(String.format("%s %s", model.getFirstName(), model.getLastName()));
@@ -50,12 +65,20 @@ public class SearchUserAdapter extends FirestoreRecyclerAdapter<UserModal, Searc
         return new UserModalHolder(v);
     }
 
+    /**
+     * UserModalHolder class
+     */
     class UserModalHolder extends RecyclerView.ViewHolder {
         TextView userName;
         TextView userDob;
         TextView userNumber;
         ImageView profileImage;
 
+        /**
+         * Constructor
+         *
+         * @param itemView
+         */
         public UserModalHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.search_profile_name);

@@ -35,7 +35,6 @@ public class SearchFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -119,6 +118,9 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    /**
+     * Start Listening for db when on screen
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -127,6 +129,9 @@ public class SearchFragment extends Fragment {
     }
 
 
+    /**
+     * Stop listening when off screen
+     */
     @Override
     public void onStop() {
         super.onStop();
