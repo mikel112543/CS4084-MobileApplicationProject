@@ -13,7 +13,7 @@ public class User {
 
 
     private String firstName, lastName, address, email, number, dob;
-    private Uri url;
+    private Uri imageUrl;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference noteRef ;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -22,15 +22,16 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, String address, String email, String number, Uri url) {
+    public User(String firstName, String lastName, String address, String email, String number, Uri imageUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.email = email;
         this.number = number;
-        this.url = url;
-        this.dob =dob;
+        this.imageUrl = imageUrl;
+        this.dob = dob;
     }
+
     public String getDob() {
         return dob;
     }
@@ -80,11 +81,11 @@ public class User {
     }
 
     public Uri getUrl() {
-        return url;
+        return imageUrl;
     }
 
-    public void setUrl(Uri url) {
-        this.url = url;
+    public void setUrl(Uri imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
 

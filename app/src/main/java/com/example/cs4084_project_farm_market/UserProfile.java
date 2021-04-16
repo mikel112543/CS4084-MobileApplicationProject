@@ -244,7 +244,7 @@ private String personID;
                                     .into(photoUrl_id);
                             number_id.setText(userModal.getNumber());
                             address_id.setText(userModal.getAddress());
-                            photoUrl_id.setImageURI(userModal.getUrl());
+                            /*photoUrl_id.setImageURI(userModal.getUrl());*/
                             Toast.makeText(UserProfile.this, "Found profile", Toast.LENGTH_SHORT).show();
                             getPicture();
 

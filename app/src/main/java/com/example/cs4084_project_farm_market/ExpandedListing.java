@@ -127,11 +127,11 @@ public class ExpandedListing extends AppCompatActivity {
                             User user;
                             user = documentSnapshot.toObject(User.class);
                             userName.setText(String.format("%s %s", user.getFirstName(), user.getLastName())) ;
-                            listingLocation.setText(user.getAddress());
+                            /*listingLocation.setText(user.getAddress());
                             Picasso.get().load(user.getUrl())
                                     .centerCrop()
                                     .fit()
-                                    .into(profileButton);
+                                    .into(profileButton);*/
                         }
                     }
                 })

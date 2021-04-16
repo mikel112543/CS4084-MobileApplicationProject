@@ -76,24 +76,6 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.home_toolbar_menu, menu);
         String userID = auth.getCurrentUser().getUid();
 
-        /*
-        DocumentReference currentUserRef = db.collection("users").document(userID);
-        Task<DocumentSnapshot> userDoc = currentUserRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    documentSnapshot.toObject(User.class);
-                    User user = documentSnapshot.toObject(User.class);
-                    MenuItem ProfilePic = menu.getItem(0);
-                    Picasso.get().load(user.getUrl())
-                            .fit()
-                            .centerCrop()
-                            .into((ImageView) ProfilePic);
-                }
-            }
-        }); */
-
-
         return true;
     }
 
@@ -105,10 +87,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.profile_btn) {
-        /*Intent intent = new Intent(MainActivity.this, ProfilePage.class);
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        intent.putExtra("UserID", userID);
-        startActivity(intent);*/
             Intent intent = new Intent(MainActivity.this, UserProfile.class);
             String userID = auth.getCurrentUser().getUid().toString();
             intent.putExtra("yourUserID", userID);

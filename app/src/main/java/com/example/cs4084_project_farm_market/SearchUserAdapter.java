@@ -14,6 +14,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SearchUserAdapter extends FirestoreRecyclerAdapter<User, SearchUserAdapter.UserModalHolder> {
 
     private OnProfileClickListener listener;
@@ -51,10 +53,10 @@ public class SearchUserAdapter extends FirestoreRecyclerAdapter<User, SearchUser
         holder.userName.setText(String.format("%s %s", model.getFirstName(), model.getLastName()));
         holder.userDob.setText(model.getDob());
         holder.userNumber.setText(model.getNumber());
-        Picasso.get().load(model.getUrl())
+        /*Picasso.get().load(model.getUrl())
                 .fit()
                 .centerCrop()
-                .into(holder.profileImage);
+                .into(holder.profileImage);*/
     }
 
     @NonNull
@@ -72,7 +74,7 @@ public class SearchUserAdapter extends FirestoreRecyclerAdapter<User, SearchUser
         TextView userName;
         TextView userDob;
         TextView userNumber;
-        ImageView profileImage;
+        CircleImageView profileImage;
 
         /**
          * Constructor
