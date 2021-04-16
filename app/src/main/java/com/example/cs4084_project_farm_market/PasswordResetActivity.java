@@ -21,8 +21,6 @@ public class PasswordResetActivity extends AppCompatActivity {
     private Button reset_btn;
     private FirebaseAuth auth;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +29,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         emailReset = findViewById(R.id.passwordReset);
         reset_btn = findViewById(R.id.reset_btn);
         auth = FirebaseAuth.getInstance();
+        reset_btn.setOnClickListener(resetPassListener);
 
         Toolbar toolbar = findViewById(R.id.reset_toolbar);
         setSupportActionBar(toolbar);
@@ -38,15 +37,22 @@ public class PasswordResetActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        reset_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmail(v);
-            }
-        });
     }
 
+    /**
+     * OnClick to send password reset Email
+     */
+    private View.OnClickListener resetPassListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            sendEmail(v);
+        }
+    };
+
+    /**
+     * @param item Set back button
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -57,16 +63,21 @@ public class PasswordResetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Send password reset email to user through Firestore
+     *
+     * @param view
+     */
     public void sendEmail(View view) {
-        if(validateEmail()) {
+        if (validateEmail()) {
             String email = emailReset.getEditText().getText().toString();
 
             auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         Toast.makeText(PasswordResetActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         Toast.makeText(PasswordResetActivity.this, "Failed to send password reset email!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -75,17 +86,22 @@ public class PasswordResetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Validate email
+     *
+     * @return true if validation ok. False otherwise
+     */
     private boolean validateEmail() {
         String email = emailReset.getEditText().getText().toString();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
-        if(email.isEmpty()) {
+        if (email.isEmpty()) {
             emailReset.setError("Field can't be empty");
             return false;
-        }else if(!email.matches(emailPattern)) {
+        } else if (!email.matches(emailPattern)) {
             emailReset.setError("Please enter a valid email");
             return false;
-        }else {
+        } else {
             emailReset.setError(null);
             return true;
         }

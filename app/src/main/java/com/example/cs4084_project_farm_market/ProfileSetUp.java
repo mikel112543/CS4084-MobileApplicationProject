@@ -7,29 +7,58 @@ import androidx.appcompat.widget.Toolbar;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
 import java.util.Objects;
+import java.util.ServiceConfigurationError;
 
 public class ProfileSetUp extends AppCompatActivity {
 
     //VIEWS
-    ImageView userProfilePic ;
-    Button chooseUserProfilePicButton ;
+    private ImageView userProfilePic ;
+    private Button chooseUserProfilePicButton ;
+    private String photoPath;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+    private static final ImageView PROFILE_PICTURE = null;
+    StorageReference storageReference;
+    FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_set_up);
+
+        //Get the intent from mainActivity that started this activity and extract the string
+        Intent intent = getIntent();
+        String name = intent.getStringExtra(RegisterActivity.EXTRA_WELCOME_MESSAGE);
+        TextView welcomeMessage = findViewById(R.id.welcomeText);
+        welcomeMessage.setText("Hello, " + name + "!!");
+
+
+
 
         //VIEWS
         chooseUserProfilePicButton = findViewById(R.id.chooseProfilePicButton);
@@ -58,6 +87,22 @@ public class ProfileSetUp extends AppCompatActivity {
             }
         });
 
+        //to upload image to cloud
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(userProfilePic);
+                photoPath = uri.toString();
+                db.collection("users")
+                        .document(fAuth.getCurrentUser().getUid())
+                        .update("imageUrl",photoPath);
+            }
+        });
+
+
     }
     private void pickImageFromGallery() {
         //intent to pick image
@@ -77,6 +122,8 @@ public class ProfileSetUp extends AppCompatActivity {
                 //permission was denied
                 Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "requestCode denied...!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -85,8 +132,45 @@ public class ProfileSetUp extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             //set Image to imageView
-            userProfilePic.setImageURI(data.getData());
+            Uri imageUri = data.getData();
+            //userProfilePic.setImageURI(imageUri);
+
+            uploadImageToFirebase(imageUri);
+
         }
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        //Upload image to firebase storage
+        StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ProfileSetUp.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
+
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(userProfilePic);
+                        photoPath = uri.toString();
+                        db.collection("users")
+                                .document(fAuth.getCurrentUser().getUid())
+                                .update("imageUrl",photoPath);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ProfileSetUp.this, "Failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //Continue to Set Location
+    public void onClickLocationActivity(View view){
+        Intent intent = new Intent(this, SetLocationActivity.class);
+        startActivity(intent);
     }
 
 

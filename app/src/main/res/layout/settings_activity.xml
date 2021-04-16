@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"    xmlns:tools="http://schemas.android.com/tools"    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="match_parent"
+        android:text="Night mode"
+        android:layout_height="50dp"
+        android:id="@+id/switch_1"/>
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="match_parent"
+        android:text="Notifications"
+        android:layout_height="50dp"
+        android:id="@+id/switch_2"/>
+</LinearLayout>

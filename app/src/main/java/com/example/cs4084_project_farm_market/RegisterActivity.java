@@ -29,12 +29,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final String EXTRA_WELCOME_MESSAGE = "ie.ul.CS4048-MobileApplicationProject.EXTRA_MESSAGE";
+
     public static final String TAG = "TAG";
-    private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_reenterPassword, txt_birthday;
+    private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_birthday;
     private Button btn_confirm;
     private FirebaseAuth auth;
     private String userID;
@@ -57,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Registration");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Registration");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -67,47 +70,51 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         txt_firstname = findViewById(R.id.txt_firstname);
-        txt_surname = findViewById(R.id.txt_firstname);
+        txt_surname = findViewById(R.id.txt_lastname);
         txt_email = findViewById(R.id.txt_registerEmail);
         txt_password = findViewById(R.id.txt_registerPassword);
-        //txt_reenterPassword = findViewById(R.id.txt_reenterPassword);
         txt_birthday = findViewById(R.id.txt_birthday);
         btn_confirm = findViewById(R.id.btn_registerConfirm);
+        btn_confirm.setOnClickListener(confirmButtonOnClick);
 
-        Drawable buttonInline = getResources().getDrawable(R.drawable.button);
-        btn_confirm.setBackground(buttonInline);
         EditText birthdayEdit = txt_birthday.getEditText();
-
-
-        birthdayEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-
-                DatePickerDialog picker = new DatePickerDialog(RegisterActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
-        });
-
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDetails(v);
-            }
-        });
+        birthdayEdit.setOnClickListener(setDOB);
     }
 
-    public void confirmDetails(View view) {
-        boolean validation = validateFirstname() && validateSurname() && validateEmail() && validatePassword();
+    private View.OnClickListener setDOB = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
+
+            DatePickerDialog picker = new DatePickerDialog(RegisterActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            txt_birthday.getEditText().setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                        }
+                    }, year, month, day);
+            picker.getDatePicker().setMaxDate(System.currentTimeMillis());
+            picker.show();
+        }
+    };
+
+    private final View.OnClickListener confirmButtonOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            confirmDetails(v);
+        }
+    };
+
+    /**
+     * Validate each of the fields. If they all return true the function runs through adding the user.
+     *
+     * @param view
+     */
+    private void confirmDetails(View view) {
+        boolean validation = validateFirstname() && validateSurname() && validateEmail() && validateDOB() && validatePassword();
 
         if (validation) {
             String email = txt_email.getEditText().getText().toString();
@@ -119,24 +126,35 @@ public class RegisterActivity extends AppCompatActivity {
                     userID = auth.getCurrentUser().getUid();
                     DocumentReference documentReference = db.collection("users").document(userID);  //Create document linking to Users unique ID
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first", txt_firstname.getEditText().getText().toString());
-                    user.put("last", txt_surname.getEditText().getText().toString());
+                    user.put("firstName", txt_firstname.getEditText().getText().toString());
+                    user.put("lastName", txt_surname.getEditText().getText().toString());
                     user.put("dob", txt_birthday.getEditText().getText().toString());
+                    user.put("email", txt_email.getEditText().getText().toString());
+                    user.put("imageUrl", "to be found");
+                    user.put("address", "tap to enter");
+                    user.put("number", " ");
+
+                    //addding details to firestore
+
+
+
+                    //Fail Handler
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "User Profile successfully created for " + userID);
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                            //"Welcome to FARMPIRE + name "
+                            String fname = txt_firstname.getEditText().getText().toString();
+                            Intent intent = new Intent(RegisterActivity.this, ProfileSetUp.class);
+                            intent.putExtra(EXTRA_WELCOME_MESSAGE,fname);
+
+
                             startActivity(intent);
                             finish();
                         }
                     })
-                            .addOnFailureListener(new OnFailureListener() {         //Fail Handler
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
+                            .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
                 }
             });
         } else {
@@ -144,6 +162,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param item if back arrow is selected
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -154,6 +176,10 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /***
+     * validate the firstname
+     * @return
+     */
     private boolean validateFirstname() {
         String firstName = txt_firstname.getEditText().getText().toString();
 
@@ -166,6 +192,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /***
+     * validate the lastname
+     * @return
+     */
     private boolean validateSurname() {
         String surname = txt_surname.getEditText().getText().toString();
 
@@ -178,9 +208,15 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * validate the email
+     *
+     * @return
+     */
     private boolean validateEmail() {
         String email = txt_email.getEditText().getText().toString();
 
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         if (email.isEmpty()) {
             txt_email.setError("Field can't be empty");
             return false;
@@ -193,6 +229,25 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /***
+     * validate the DOB
+     * @return
+     */
+    private boolean validateDOB() {
+        String dob = txt_birthday.getEditText().getText().toString();
+        if (dob.isEmpty()) {
+            txt_birthday.setError("Field can't be empty");
+            return false;
+        } else {
+            txt_birthday.setError(null);
+            return true;
+        }
+    }
+
+    /***
+     * validate teh password
+     * @return
+     */
     private boolean validatePassword() {
         String password = txt_password.getEditText().getText().toString();
 
@@ -209,19 +264,4 @@ public class RegisterActivity extends AppCompatActivity {
     }
 }
 
-    /*private boolean validateReenterPassword() {
-        String reenterPassword = txt_reenterPassword.getEditText().getText().toString();
-        String password = txt_password.getEditText().getText().toString();
 
-        if (reenterPassword.isEmpty()) {
-            txt_reenterPassword.setError("Field can't be empty");
-            return false;
-        }else if(!reenterPassword.equals(password)) {
-            txt_reenterPassword.setError("Passwords do not match");
-            return false;
-        }else{
-            txt_reenterPassword.setError(null);
-            return true;
-        }
-    }
-}*/
