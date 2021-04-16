@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/search_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,8 +24,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/search_profile_name"
             app:layout_constraintStart_toStartOf="parent"
+            app:civ_border_width="2dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_account_circle_80" />
+            android:src="@drawable/ic_baseline_account_circle_80" />
 
         <TextView
             android:id="@+id/search_profile_name"
