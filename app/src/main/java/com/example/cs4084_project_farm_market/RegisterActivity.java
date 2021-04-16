@@ -38,9 +38,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     public static final String TAG = "TAG";
     private TextInputLayout txt_firstname, txt_surname, txt_email, txt_password, txt_birthday;
+    private Button btn_confirm;
     private FirebaseAuth auth;
     private String userID;
-    private FirebaseFirestore db;
+    public FirebaseFirestore db;
+
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
@@ -71,24 +74,14 @@ public class RegisterActivity extends AppCompatActivity {
         txt_email = findViewById(R.id.txt_registerEmail);
         txt_password = findViewById(R.id.txt_registerPassword);
         txt_birthday = findViewById(R.id.txt_birthday);
+        btn_confirm = findViewById(R.id.btn_registerConfirm);
+        btn_confirm.setOnClickListener(confirmButtonOnClick);
+
         EditText birthdayEdit = txt_birthday.getEditText();
-
-        birthdayEdit.setOnClickListener(birthdayOnClickListener);
-
-        Button btn_confirm = findViewById(R.id.btn_registerConfirm);
-
-        Drawable buttonInline = getResources().getDrawable(R.drawable.button);
-        btn_confirm.setBackground(buttonInline);
-
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDetails(v);
-            }
-        });
+        birthdayEdit.setOnClickListener(setDOB);
     }
 
-    private View.OnClickListener birthdayOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener setDOB = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final Calendar calendar = Calendar.getInstance();
@@ -108,8 +101,20 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
-    public void confirmDetails(View view) {
-        boolean validation = validateFirstname() && validateSurname() && validateEmail() && validatePassword();
+    private final View.OnClickListener confirmButtonOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            confirmDetails(v);
+        }
+    };
+
+    /**
+     * Validate each of the fields. If they all return true the function runs through adding the user.
+     *
+     * @param view
+     */
+    private void confirmDetails(View view) {
+        boolean validation = validateFirstname() && validateSurname() && validateEmail() && validateDOB() && validatePassword();
 
         if (validation) {
             String email = txt_email.getEditText().getText().toString();
@@ -157,6 +162,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param item if back arrow is selected
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -167,6 +176,10 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /***
+     * validate the firstname
+     * @return
+     */
     private boolean validateFirstname() {
         String firstName = txt_firstname.getEditText().getText().toString();
 
@@ -179,6 +192,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /***
+     * validate the lastname
+     * @return
+     */
     private boolean validateSurname() {
         String surname = txt_surname.getEditText().getText().toString();
 
@@ -191,6 +208,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * validate the email
+     *
+     * @return
+     */
     private boolean validateEmail() {
         String email = txt_email.getEditText().getText().toString();
 
@@ -207,6 +229,25 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /***
+     * validate the DOB
+     * @return
+     */
+    private boolean validateDOB() {
+        String dob = txt_birthday.getEditText().getText().toString();
+        if (dob.isEmpty()) {
+            txt_birthday.setError("Field can't be empty");
+            return false;
+        } else {
+            txt_birthday.setError(null);
+            return true;
+        }
+    }
+
+    /***
+     * validate teh password
+     * @return
+     */
     private boolean validatePassword() {
         String password = txt_password.getEditText().getText().toString();
 
