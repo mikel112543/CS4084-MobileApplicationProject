@@ -1,12 +1,15 @@
 package com.example.cs4084_project_farm_market;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +19,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.squareup.picasso.Picasso;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
+    private final String TAG = "TAG";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference listingRef = db.collection("listings");
     private ListingAdapter adapter;
+    private FirebaseAuth auth;
+    private Listing listing;
 
 
     public HomeFragment() {
@@ -36,6 +51,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -43,6 +59,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_home, container, false);
         setUpRecyclerView(mView);
+        auth = FirebaseAuth.getInstance();
         FirebaseFirestore.setLoggingEnabled(true);
         return mView;
     }
@@ -87,11 +104,33 @@ public class HomeFragment extends Fragment {
             @Override
             public void onButtonClick(DocumentSnapshot documentSnapshot, int position) {
                 Listing listing = documentSnapshot.toObject(Listing.class);
-                String title = listing.getTitle();
-                String description = listing.getDescription();
-                String price = listing.getPrice();
-                String imageUrl = listing.getImageUrl();
-
+                String documentId = documentSnapshot.getId();
+                DocumentReference documentReference = db.collection("savedListings")
+                        .document(auth.getCurrentUser().getUid())
+                        .collection("userListings").document(documentId);
+                Map<String, Object> savedListing = new HashMap<>();
+                savedListing.put("userID", listing.getUserID());
+                savedListing.put("imageUrl", listing.getImageUrl());
+                savedListing.put("title", listing.getTitle());
+                savedListing.put("description", listing.getDescription() );
+                savedListing.put("price", listing.getPrice());
+                savedListing.put("date", listing.getDate());
+                savedListing.put("time", listing.getTime());
+                documentReference.set(savedListing).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Context context;
+                        CharSequence text;
+                        Toast.makeText(getActivity(), "Listing successfully saved", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, e.toString());
+                                Toast.makeText(getActivity(), "You have already added this listing", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
     }

@@ -141,6 +141,7 @@
                 android:layout_height="100dp"
                 android:background="#654CAF50"
                 android:contentDescription="settings"
+                android:onClick="onClickSettings"
                 app:srcCompat="@drawable/settings_icon" />
         </com.google.android.material.card.MaterialCardView>
     </com.google.android.material.card.MaterialCardView>

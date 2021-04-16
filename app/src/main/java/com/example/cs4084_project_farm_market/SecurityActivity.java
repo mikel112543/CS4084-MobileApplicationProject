@@ -90,7 +90,7 @@ public class SecurityActivity extends AppCompatActivity {
 
     //Continue to Set Location
     public void onClickProfileActivity(View view) {
-        Intent intent = new Intent(this, UserProfile.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

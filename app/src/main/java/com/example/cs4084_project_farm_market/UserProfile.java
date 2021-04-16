@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -51,6 +53,21 @@ public class UserProfile extends AppCompatActivity {
     private FirebaseAuth auth;
     private ImageButton edit;
     StorageReference storageReference;
+    //visibility
+    private MaterialCardView card1;
+    private MaterialCardView card2;
+    private MaterialCardView card3;
+    private MaterialCardView card4;
+    private MaterialCardView card5;
+    private MaterialCardView card6;
+    private ImageView backdrop;
+    private ImageButton settingsImage;
+    private ImageButton historyImage;
+    private TextView saveText;
+    private TextView historyText;
+    private TextView settingsText;
+
+
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -68,7 +85,23 @@ public class UserProfile extends AppCompatActivity {
         email_id = findViewById(R.id.emailAddress_ID);
         number_id = findViewById(R.id.phoneNumber_ID);
         address_id = findViewById(R.id.homeAddress_ID);
+
+        //visibility
+        card1 = findViewById(R.id.materialCardView2);
+        card2 = findViewById(R.id.materialCardView);
+        card3 = findViewById(R.id.materialCardView3);
+        /*card4 = findViewById(R.id.imageButtonEdit);
+        card5 = findViewById(R.id.imageButtonEdit);
+        card6 = findViewById(R.id.imageButtonEdit);*/
+        backdrop = findViewById(R.id.imageView10);
         edit = findViewById(R.id.imageButtonEdit);
+        settingsImage = findViewById(R.id.imageButtonEdit);
+        historyImage = findViewById(R.id.imageButtonEdit);
+        saveText = findViewById(R.id.textViewEdit_ID);
+        historyText = findViewById(R.id.textViewHistory_ID);
+        settingsText = findViewById(R.id.textViewSettings_ID);
+
+
 
         auth = FirebaseAuth.getInstance();
         userID = auth.getCurrentUser().getUid();
@@ -80,6 +113,40 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        Intent intent = getIntent();
+        String userID2 = intent.getStringExtra("userID");
+
+        //If user is clicking on their own profile
+        if(userID == auth.getCurrentUser().getUid()){
+            locateProfile();
+            getRegInfo();
+            edit.setOnClickListener(v -> onClickUpdateProfile());
+            updateProfile();
+            uploadImageToCloud();
+        } else {            userID = userID2;
+
+            card1.setVisibility(View.GONE);
+            card2.setVisibility(View.GONE);
+            card3.setVisibility(View.GONE);
+            backdrop.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+            settingsImage.setVisibility(View.GONE);
+            historyText.setVisibility(View.GONE);
+            historyImage.setVisibility(View.GONE);
+            settingsText.setVisibility(View.GONE);
+            saveText.setVisibility(View.GONE);
+            settingsImage.setVisibility(View.GONE);
+            settingsImage.setVisibility(View.GONE);
+            locateProfile();
+            getRegInfo();
+            edit.setOnClickListener(v -> onClickUpdateProfile());
+            updateProfile();
+            uploadImageToCloud();
+        }
+
+    }
+
+    private void locateProfile(){
         storageRef = FirebaseStorage.getInstance().getReference().child("users/" + userID + "/profile.jpg");
         try {
             final File localFile = File.createTempFile("profile", "jpg");
@@ -100,13 +167,10 @@ public class UserProfile extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        getRegInfo();
-
-        edit.setOnClickListener(v -> onClickUpdateProfile());
+    }
 
 
-        //--------------------------------------Update Profile
+    private void updateProfile(){
         photoUrl_id = findViewById(R.id.userProfilePicture_ID);
         photoUrl_id.setOnClickListener(v -> {
             //check runtime permission
@@ -121,10 +185,12 @@ public class UserProfile extends AppCompatActivity {
                 pickImageFromGallery();
             }
         });
+    }
 
+
+    private void uploadImageToCloud(){
         //to upload image to cloud
         storageReference = FirebaseStorage.getInstance().getReference();
-
         StorageReference profileRef = storageReference.child("users/"+userID+"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -137,8 +203,6 @@ public class UserProfile extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void getRegInfo(){
@@ -285,5 +349,9 @@ public class UserProfile extends AppCompatActivity {
     }
 
 
+    public void onClickSettings(View view){
+        Intent intent = new Intent(UserProfile.this, SettingsActivity.class);
+        startActivity(intent);
+    }
 
 }

@@ -12,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.widget.Toolbar;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.model.Document;
+import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,10 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
+    DocumentSnapshot documentSnapshot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        auth = FirebaseAuth.getInstance();
+
 
         Toolbar toolbar = findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         collapsingToolbarLayout.setTitle("Home");
+
 
     }
 
@@ -63,30 +71,63 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.home_toolbar_menu, menu);
-        /*DocumentReference currentUserRef = db.collection("users").document(auth.getCurrentUser().getUid());*/
-        /*Document userDoc = currentUserRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        String userID = auth.getCurrentUser().getUid();
+
+        /*
+        DocumentReference currentUserRef = db.collection("users").document(userID);
+        Task<DocumentSnapshot> userDoc = currentUserRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    task.getResult().toObject(UserModal.class)
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    documentSnapshot.toObject(User.class);
+                    User user = documentSnapshot.toObject(User.class);
+                    MenuItem ProfilePic = menu.getItem(0);
+                    Picasso.get().load(user.getUrl())
+                            .fit()
+                            .centerCrop()
+                            .into((ImageView) ProfilePic);
                 }
             }
-        });*/
-        MenuItem ProfilePic = menu.getItem(0);
+        }); */
+
+
         return true;
     }
 
     /**
      * OnClick Listener to access Users profile
      */
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.profile_btn) {
+        /*Intent intent = new Intent(MainActivity.this, ProfilePage.class);
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        intent.putExtra("UserID", userID);
+        startActivity(intent);*/
+            Intent intent = new Intent(MainActivity.this, UserProfile.class);
+            String userID = auth.getCurrentUser().getUid();
+            intent.putExtra("userID", userID);
+
+            startActivity(new Intent(MainActivity.this, UserProfile.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+/*
     private final MenuItem.OnMenuItemClickListener profileBtnListener = new MenuItem.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            Intent intent = new Intent(MainActivity.this, UserProfile.class);
+            String userID = auth.getCurrentUser().getUid();
+            intent.putExtra("userID", userID);
+
+            startActivity(new Intent(MainActivity.this, UserProfile.class));
             finish();
             return true;
         }
-    };
+    }; */
 
     /***
      * OnCLick listener for user to create new listing
