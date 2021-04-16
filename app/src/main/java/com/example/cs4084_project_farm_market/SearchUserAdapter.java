@@ -14,7 +14,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
-public class SearchUserAdapter extends FirestoreRecyclerAdapter<UserModal, SearchUserAdapter.UserModalHolder> {
+public class SearchUserAdapter extends FirestoreRecyclerAdapter<User, SearchUserAdapter.UserModalHolder> {
 
     private OnProfileClickListener listener;
 
@@ -37,7 +37,7 @@ public class SearchUserAdapter extends FirestoreRecyclerAdapter<UserModal, Searc
      *
      * @param options
      */
-    public SearchUserAdapter(@NonNull FirestoreRecyclerOptions<UserModal> options) {
+    public SearchUserAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
         super(options);
     }
 
@@ -47,11 +47,11 @@ public class SearchUserAdapter extends FirestoreRecyclerAdapter<UserModal, Searc
      * @param model    POJO of User Modal
      */
     @Override
-    protected void onBindViewHolder(@NonNull SearchUserAdapter.UserModalHolder holder, int position, @NonNull UserModal model) {
+    protected void onBindViewHolder(@NonNull SearchUserAdapter.UserModalHolder holder, int position, @NonNull User model) {
         holder.userName.setText(String.format("%s %s", model.getFirstName(), model.getLastName()));
         holder.userDob.setText(model.getDob());
         holder.userNumber.setText(model.getNumber());
-        Picasso.get().load(model.getProfileUrl())
+        Picasso.get().load(model.getUrl())
                 .fit()
                 .centerCrop()
                 .into(holder.profileImage);

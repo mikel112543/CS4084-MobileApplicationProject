@@ -110,8 +110,13 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("UserID", userID);
         startActivity(intent);*/
             Intent intent = new Intent(MainActivity.this, UserProfile.class);
-            String userID = auth.getCurrentUser().getUid();
-            intent.putExtra("userID", userID);
+            String userID = auth.getCurrentUser().getUid().toString();
+            intent.putExtra("yourUserID", userID);
+
+            Bundle bundle=new Bundle();
+            bundle.putString("yourUserID2", userID);
+            intent.putExtra("Person", bundle);
+
 
             startActivity(new Intent(MainActivity.this, UserProfile.class));
         }

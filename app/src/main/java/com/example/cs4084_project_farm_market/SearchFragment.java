@@ -1,5 +1,6 @@
 package com.example.cs4084_project_farm_market;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.view.MenuItemCompat;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -47,8 +49,8 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_search, container, false);
         Query querySearch = userRef.orderBy("firstName");
-        FirestoreRecyclerOptions<UserModal> options = new FirestoreRecyclerOptions.Builder<UserModal>()
-                .setQuery(querySearch, UserModal.class)
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(querySearch, User.class)
                 .build();
 
         adapter = new SearchUserAdapter(options);
@@ -63,12 +65,10 @@ public class SearchFragment extends Fragment {
             @Override
             public void onProfileClick(DocumentSnapshot documentSnapshot, int position) {
                 //Intent to go to the users profile onClick
-                /*Intent intent = new Intent(getActivity(), UserProfile.class);
+                Intent intent = new Intent(getActivity(), UserProfile.class);
                 String id = documentSnapshot.getId();
                 intent.putExtra("userID", id);
-                startActivity(intent);*/
-
-                /*Toast.makeText(getActivity(), "ID=" + id, Toast.LENGTH_SHORT).show();*/
+                startActivity(intent);
             }
         });
 
@@ -103,8 +103,8 @@ public class SearchFragment extends Fragment {
                 Query querySearch = userRef.orderBy("firstName").startAt(newText).endAt(newText + "\uf8ff");
                 recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view);
 
-                FirestoreRecyclerOptions<UserModal> options = new FirestoreRecyclerOptions.Builder<UserModal>()
-                        .setQuery(querySearch, UserModal.class)
+                FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                        .setQuery(querySearch, User.class)
                         .build();
                 if (adapter == null) {
                     adapter = new SearchUserAdapter(options);

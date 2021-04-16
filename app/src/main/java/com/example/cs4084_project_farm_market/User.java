@@ -31,7 +31,13 @@ public class User {
         this.url = url;
         this.dob =dob;
     }
+    public String getDob() {
+        return dob;
+    }
 
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
     public String getFirstName() {
         return firstName;

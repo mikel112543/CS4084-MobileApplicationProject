@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,12 +32,11 @@ public class ExpandedListing extends AppCompatActivity {
     private FirebaseAuth auth;
     private String documentID;
     private String userID;
-    private TextView userName, listingTitle, listingDescription, listingTime, listingDate, listingPrice;
+    private TextView userName, listingTitle, listingDescription, listingTime, listingDate, listingPrice, listingLocation;
     private Button buyButton;
     private ImageButton profileButton;
     private ImageView listingImage;
     private Listing listing;
-    /*private User user;*/
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
@@ -55,18 +53,18 @@ public class ExpandedListing extends AppCompatActivity {
         listingTime = findViewById(R.id.expanded_listing_time);
         listingDate = findViewById(R.id.expanded_listing_date);
         listingPrice = findViewById(R.id.expanded_listing_price);
+        listingLocation = findViewById(R.id.expanded_listing_location);
         listingImage = findViewById(R.id.expanded_listing_image);
         buyButton = findViewById(R.id.buy_button);
         profileButton = findViewById(R.id.listing_profile_button);
         collapsingToolbarLayout = findViewById(R.id.listing_collapsing_toolbar);
 
-        /*profileButton.setOnClickListener(profileButtonListener);
-        buyButton.setOnClickListener(buyButtonListener);*/
+        profileButton.setOnClickListener(profileButtonListener);
+        buyButton.setOnClickListener(buyButtonListener);
 
         Intent intent = getIntent();
         documentID = intent.getStringExtra("documentId");
         getListingInfo();
-        /*getUserInfo();*/
     }
 
 
@@ -94,6 +92,7 @@ public class ExpandedListing extends AppCompatActivity {
                                     .fit()
                                     .centerCrop()
                                     .into(listingImage);
+                            getUserInfo(userID);
                             String currentUser = auth.getCurrentUser().getUid();
                             if (userID.equals(currentUser)) {
                                 buyButton.setVisibility(View.INVISIBLE);
@@ -118,21 +117,21 @@ public class ExpandedListing extends AppCompatActivity {
     /**
      * Obtainted from the Listing Document. Used to further populate the activity with User name and address
      */
-    private void getUserInfo() {
+    private void getUserInfo(String userID) {
         DocumentReference documentReference = db.collection("users").document(userID);
         documentReference.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            /*user = documentSnapshot.toObject(User.class);
-                            /*userName.setText(user.getName()) ;*/
-                            /*Picasso.get().load(user.getImageUri)
+                            User user;
+                            user = documentSnapshot.toObject(User.class);
+                            userName.setText(String.format("%s %s", user.getFirstName(), user.getLastName())) ;
+                            listingLocation.setText(user.getAddress());
+                            Picasso.get().load(user.getUrl())
                                     .centerCrop()
                                     .fit()
-                                    .into(profileButton);*/
-                            //Ready to connect to Bandis Profile Activity
-
+                                    .into(profileButton);
                         }
                     }
                 })
@@ -154,9 +153,9 @@ public class ExpandedListing extends AppCompatActivity {
     private final View.OnClickListener profileButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            /*Intent intent = new Intent(MainActivity.this, UserProfile.class);
+            Intent intent = new Intent(ExpandedListing.this, UserProfile.class);
             intent.putExtra("userID", userID);
-            startActivity(new Intent(MainActivity.this, UserProfile.class));*/
+            startActivity(new Intent(ExpandedListing.this, UserProfile.class));
 
             //OnClick for ProfileButton
             //Send userID as String through Intent to UserProfile Activity

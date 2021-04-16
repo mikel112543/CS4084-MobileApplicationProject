@@ -67,6 +67,8 @@ public class UserProfile extends AppCompatActivity {
     private TextView historyText;
     private TextView settingsText;
 
+    private String user_ID;
+private String personID;
 
 
 
@@ -100,6 +102,7 @@ public class UserProfile extends AppCompatActivity {
         saveText = findViewById(R.id.textViewEdit_ID);
         historyText = findViewById(R.id.textViewHistory_ID);
         settingsText = findViewById(R.id.textViewSettings_ID);
+        photoUrl_id = findViewById(R.id.userProfilePicture_ID);
 
 
 
@@ -116,15 +119,30 @@ public class UserProfile extends AppCompatActivity {
         Intent intent = getIntent();
         String userID2 = intent.getStringExtra("userID");
 
+        Intent intent2 = getIntent();
+       user_ID = intent2.getStringExtra("yourUserID");
+
+        /*Intent callerIntent = getIntent();
+        Bundle packageFromCaller=
+                callerIntent.getBundleExtra("Person");
+        String personID =packageFromCaller.getString("yourUserID2");
+*/
+        if (getIntent().hasExtra("yourUserID")){
+             personID = getIntent().getStringExtra("yourUserID");
+
+        }
+
+
         //If user is clicking on their own profile
-        if(userID == auth.getCurrentUser().getUid()){
+        if(personID == auth.getCurrentUser().getUid()){
+            userID = user_ID;
             locateProfile();
-            getRegInfo();
+            getRegInfo(userID);
             edit.setOnClickListener(v -> onClickUpdateProfile());
             updateProfile();
             uploadImageToCloud();
-        } else {            userID = userID2;
-
+        } else {
+            userID = userID2;
             card1.setVisibility(View.GONE);
             card2.setVisibility(View.GONE);
             card3.setVisibility(View.GONE);
@@ -132,13 +150,16 @@ public class UserProfile extends AppCompatActivity {
             edit.setVisibility(View.GONE);
             settingsImage.setVisibility(View.GONE);
             historyText.setVisibility(View.GONE);
-            historyImage.setVisibility(View.GONE);
             settingsText.setVisibility(View.GONE);
             saveText.setVisibility(View.GONE);
+            email_id.setEnabled(false);
+            number_id.setEnabled(false);
+            address_id.setEnabled(false);
+            photoUrl_id.setClickable(false);
             settingsImage.setVisibility(View.GONE);
             settingsImage.setVisibility(View.GONE);
             locateProfile();
-            getRegInfo();
+            getRegInfo(userID);
             edit.setOnClickListener(v -> onClickUpdateProfile());
             updateProfile();
             uploadImageToCloud();
@@ -205,8 +226,9 @@ public class UserProfile extends AppCompatActivity {
         });
     }
 
-    private void getRegInfo(){
+    private void getRegInfo(String userID) {
         Toast.makeText(UserProfile.this, "Getting profile data", Toast.LENGTH_SHORT).show();
+
         noteRef = db.collection("users").document(userID);
         noteRef.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -258,6 +280,7 @@ public class UserProfile extends AppCompatActivity {
         Toast.makeText(this, "Changes Saved", Toast.LENGTH_SHORT).show();
 
     }
+
 
     public void getPicture(){
         storageRef = FirebaseStorage.getInstance().getReference().child("users/" + userID + "/profile.jpg");

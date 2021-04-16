@@ -132,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
                     user.put("email", txt_email.getEditText().getText().toString());
                     user.put("imageUrl", "to be found");
                     user.put("address", "tap to enter");
-                    user.put("number", "tap to enter");
+                    user.put("number", " ");
 
                     //addding details to firestore
 
