@@ -66,7 +66,7 @@ public class ExpandedListing extends AppCompatActivity {
         Intent intent = getIntent();
         documentID = intent.getStringExtra("documentId");
         getListingInfo();
-        /*getUserInfo(userID);*/
+        /*getUserInfo();*/
     }
 
 
@@ -125,6 +125,12 @@ public class ExpandedListing extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+                            /*user = documentSnapshot.toObject(User.class);
+                            /*userName.setText(user.getName()) ;*/
+                            /*Picasso.get().load(user.getImageUri)
+                                    .centerCrop()
+                                    .fit()
+                                    .into(profileButton);*/
                             //Ready to connect to Bandis Profile Activity
 
                         }
@@ -148,6 +154,10 @@ public class ExpandedListing extends AppCompatActivity {
     private final View.OnClickListener profileButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            /*Intent intent = new Intent(MainActivity.this, UserProfile.class);
+            intent.putExtra("userID", userID);
+            startActivity(new Intent(MainActivity.this, UserProfile.class));*/
+
             //OnClick for ProfileButton
             //Send userID as String through Intent to UserProfile Activity
             //Activity should then handle userID to user Info to populate the activity.
