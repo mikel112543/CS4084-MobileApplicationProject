@@ -28,9 +28,7 @@
         android:theme="@style/Theme.CS4084_Project_Farm_Market">
         <activity android:name=".ExpandedListing"></activity>
         <activity android:name=".NewListingActivity" />
-        <activity android:name=".PasswordResetActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity">
         <activity android:name=".UserProfile">
             <intent-filter>2
                 <action android:name="android.intent.action.MAIN" />
@@ -94,7 +92,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>

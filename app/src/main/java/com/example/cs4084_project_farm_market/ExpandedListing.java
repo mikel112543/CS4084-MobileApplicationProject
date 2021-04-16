@@ -116,17 +116,15 @@ public class ExpandedListing extends AppCompatActivity {
     }
 
     /**
-     * @param userID Obtainted from the Listing Document. Used to further populate the activity with User name and address
+     * Obtainted from the Listing Document. Used to further populate the activity with User name and address
      */
-    private void getUserInfo(String userID) {
+    private void getUserInfo() {
         DocumentReference documentReference = db.collection("users").document(userID);
         documentReference.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            /*user = documentSnapshot.toObject(User.class);
-                            /*userName.setText(user.getName()) ;*/
                             //Ready to connect to Bandis Profile Activity
 
                         }
